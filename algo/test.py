@@ -13,8 +13,13 @@ def test_solve_case3():
     assert solve(["ab", "bc", "cd"], "abab") == None
 
 
+def test_solve_case4():
+    assert solve(["ab", "bc", "cd"], "abcd") == ("ab", "cd")
+
+
 if __name__ == "__main__":
     test_solve_case1()
     test_solve_case2()
     test_solve_case3()
+    test_solve_case4()
     print("Everything working fine")

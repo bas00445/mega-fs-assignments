@@ -15,4 +15,4 @@ def solve(wordList, target):
     if (len(result) == 0):
         return None
 
-    return tuple(result)
+    return tuple(result[0:2])
