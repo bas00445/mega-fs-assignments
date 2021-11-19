@@ -9,9 +9,9 @@ def solve(wordList, target):
             if (i == j):
                 continue
 
-            temp = wordList[i] + wordList[j]
+            tempWord = wordList[i] + wordList[j]
 
-            if (temp == target):
+            if (tempWord == target):
                 result.append(wordList[i])
                 result.append(wordList[j])
 
