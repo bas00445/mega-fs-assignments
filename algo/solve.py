@@ -3,9 +3,6 @@ def solve(wordList, target):
 
     for i in range(0, len(wordList)):
         for j in range(0, len(wordList)):
-            if (len(result) == 2):
-                break
-
             if (i == j):
                 continue
 
@@ -15,7 +12,7 @@ def solve(wordList, target):
                 result.append(wordList[i])
                 result.append(wordList[j])
 
-    if (len(result) == 0):
-        return None
+                if (len(result) == 2):
+                    return tuple(result)
 
-    return tuple(result)
+    return None
