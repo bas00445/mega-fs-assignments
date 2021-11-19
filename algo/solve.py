@@ -3,7 +3,7 @@ def solve(wordList, target):
 
     for i in range(0, len(wordList)):
         for j in range(0, len(wordList)):
-            if (i == j):
+            if (len(result) == 2 or i == j):
                 continue
 
             temp = wordList[i] + wordList[j]
@@ -15,4 +15,4 @@ def solve(wordList, target):
     if (len(result) == 0):
         return None
 
-    return tuple(result[0:2])
+    return tuple(result)
