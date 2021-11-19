@@ -17,9 +17,20 @@ def test_solve_case4():
     assert solve(["ab", "bc", "cd"], "abcd") == ("ab", "cd")
 
 
+def test_solve_case5():
+    assert solve(["ab", "bc", "cd"], "abcdx") == None
+
+
+def test_solve_case6():
+    assert solve(["ab", "bc"], "abbc") == ("ab", "bc")
+
+
 if __name__ == "__main__":
     test_solve_case1()
     test_solve_case2()
     test_solve_case3()
     test_solve_case4()
+    test_solve_case5()
+    test_solve_case6()
+
     print("Everything working fine")
