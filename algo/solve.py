@@ -1,11 +1,10 @@
 def solve(wordList, target):
     result = []
 
-    for word in wordList:
-        if word == "":
-            # wordList.split('') => throw error
-            continue
+    if (len(wordList) == 1 and wordList[0] == ''):
+        return None
 
+    for word in wordList:
         splitWords = target.split(word)
 
         if ("" in splitWords):
