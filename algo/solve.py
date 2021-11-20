@@ -1,6 +1,32 @@
 def solve(wordList, target):
     result = []
 
+    for word in wordList:
+        if word == "":
+            # wordList.split('') => throw error
+            continue
+
+        splitWords = target.split(word)
+
+        if ("" in splitWords):
+            splitWords.remove("")
+            result.append(splitWords[0])
+
+    for i in range(len(result)-1):
+        cur = result[i]
+        next = result[i+1]
+
+        if (cur+next == target):
+            return (cur, next)
+        elif (next+cur == target):
+            return (next, cur)
+
+    return None
+
+
+def solve_slower(wordList, target):
+    result = []
+
     for i in range(0, len(wordList)):
         for j in range(0, len(wordList)):
             if (i == j):
