@@ -2,23 +2,25 @@ def solve(wordList, target):
     if (len(wordList) == 0 or (len(wordList) == 1 and wordList[0] == '')):
         return None
 
-    result = []
+    pairs = {}
 
     for word in wordList:
-        splitWords = target.split(word)
+        splitWord = target.split(word)
 
-        if ("" in splitWords):
-            splitWords.remove("")
-            result.append(splitWords[0])
+        if (len(splitWord) == 1):
+            # Can't split target by word
+            continue
 
-    if (len(result) == 2):
-        first = result[0]
-        second = result[1]
+        matchingWord = splitWord[1] if splitWord[0] == '' else splitWord[0]
+        pairs[matchingWord] = True
 
-        if (first+second == target):
-            return (first, second)
-        elif (second+first == target):
-            return (second, first)
+        if (word in pairs):
+            if (splitWord[0] == ''):
+                return (word, splitWord[1])
+            if (splitWord[1] == ''):
+                return (splitWord[0], word)
+
+    return None
 
 
 # This is a brute force version
