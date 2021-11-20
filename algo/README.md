@@ -4,14 +4,31 @@
 2. In terminal type `python main.py`
 3. See the results at terminal
 4. In case you want to see testing results type `python test.py`
----
 
+</br>
 
 # How the code work
 1. Check edge case if the length of `wordList` is 0 or it contains only one empty string, then it will return `None` before doing calculation in normal cases.
-2. Create an empty array called `result`, which will contain list of word inside `wordList`
+2. Create an empty dict called `pairs`
 3. Iterate through the `wordList`
    1. Try to split the `target` string with each word, example results of `splitWords` will be `['', 'cd']`, `['a', 'd']`, `['ab', '']`
-   1. If there is `''` inside the `splitWords`, it mean that the current `word` could be a pair.
-   2. Clean the `splitWords` by removing `''` from them and append the remaning word to `result`
-4. If the length of result is 2, meaning that there is a pair that can combine into the `target` word, but the sequence may be vice versa, so try to find a correct sequence then return the result of tuple.
+   2. If length of `splitWord` is 1, it mean that `target` can't be split by `word`
+   3. Create variable `remainingWord` to determine the remaining pair that can be combined with `word` and store the `remainingWord` into the dict `pairs`
+   4. Check if `word` inside `pairs`
+      1. if `splitWord[0] == ''` the current `word` should be at the front of the `remainingWord`
+      2. if `splitWord[1] == ''` the current `word` should be after of the `remainingWord`
+4. Return `None` if condition inside `3.` not met
+
+<br/>
+
+# Time and Space complexity
+
+## Time complexity
+
+1. This section of code is running at constant time => O(1)
+    ```
+    if (len(wordList) == 0 or (len(wordList) == 1 and wordList[0] == '')):
+        return None
+    ```
+
+2. 
