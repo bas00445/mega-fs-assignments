@@ -1,8 +1,8 @@
 def solve(wordList, target):
-    result = []
-
-    if (len(wordList) == 1 and wordList[0] == ''):
+    if (len(wordList) == 0 or (len(wordList) == 1 and wordList[0] == '')):
         return None
+
+    result = []
 
     for word in wordList:
         splitWords = target.split(word)
@@ -19,8 +19,6 @@ def solve(wordList, target):
             return (first, second)
         elif (second+first == target):
             return (second, first)
-
-    return None
 
 
 def solve_slower(wordList, target):
