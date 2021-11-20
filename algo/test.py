@@ -37,7 +37,7 @@ class TestSolve(unittest.TestCase):
     def test_solve_case11(self):
         self.assertEqual(solve(["ab", "bc", "cdd"], "abcdd"), ("ab", "cdd"))
 
-    def test_solve_case11(self):
+    def test_solve_case12(self):
         self.assertEqual(solve(["abb", "bc", "cd"], "cdabb"), ("cd", "abb"))
 
 
