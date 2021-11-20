@@ -21,6 +21,7 @@ def solve(wordList, target):
             return (second, first)
 
 
+# This is a brute force version
 def solve_slower(wordList, target):
     result = []
 
