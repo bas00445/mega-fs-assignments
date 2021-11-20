@@ -11,14 +11,14 @@ def solve(wordList, target):
             splitWords.remove("")
             result.append(splitWords[0])
 
-    for i in range(len(result)-1):
-        cur = result[i]
-        next = result[i+1]
+    if (len(result) == 2):
+        first = result[0]
+        second = result[1]
 
-        if (cur+next == target):
-            return (cur, next)
-        elif (next+cur == target):
-            return (next, cur)
+        if (first+second == target):
+            return (first, second)
+        elif (second+first == target):
+            return (second, first)
 
     return None
 
