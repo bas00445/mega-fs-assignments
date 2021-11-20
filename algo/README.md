@@ -25,16 +25,13 @@
 
 ## Time complexity
 let `N` be number of item in `wordList` and `K` be length of `target` string
-
-1. This section of code => O(1)
-    ```
-    if (len(wordList) == 0 or (len(wordList) == 1 and wordList[0] == '')):
+```
+def solve(wordList, target):
+    if (len(wordList) == 0 or (len(wordList) == 1 and wordList[0] == '')): --> O(1)
         return None
-    ```
 
-2. `pairs = {}` => O(1)
-3. This section of code
-   ```
+    pairs = {} --> O(1)
+
     for word in wordList:
         splitWord = target.split(word) --> O(K)
 
@@ -50,9 +47,11 @@ let `N` be number of item in `wordList` and `K` be length of `target` string
                 return (word, matchingWord)
             if (splitWord[1] == ''):
                 return (matchingWord, word)
-   ```
-4. `return None` => O(1)
-5. Total time complexity = O(1) + O(1) + N*(O(K)+O(1)+O(1)+O(1)+O(1)+O(1))
+
+    return None --> O(1)
+```
+
+Total time complexity = O(1) + O(1) + N*(O(K)+O(1)+O(1)+O(1)+O(1)) + O(1)
     ```
     = O(NK)
     ```
