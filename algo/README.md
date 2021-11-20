@@ -56,3 +56,36 @@ Total time complexity = O(1) + O(1) + N*(O(K)+O(1)+O(1)+O(1)+O(1)) + O(1)
     = O(NK)
     ```
     
+## Space complexity
+let `N` be number of item in `wordList` and `K` be length of `target` string
+```
+def solve(wordList, target):
+    if (len(wordList) == 0 or (len(wordList) == 1 and wordList[0] == '')): --> O(1)
+        return None
+
+    pairs = {} --> O(1)
+
+    for word in wordList:
+        splitWord = target.split(word) --> O(K)
+
+        if (len(splitWord) == 1): --> O(1)
+            # Can't split target by word
+            continue
+
+        matchingWord = splitWord[1] if splitWord[0] == '' else splitWord[0] --> O(1)
+        pairs[matchingWord] = True --> O(1)
+
+        if (word in pairs): --> O(1)
+            if (splitWord[0] == ''):
+                return (word, matchingWord)
+            if (splitWord[1] == ''):
+                return (matchingWord, word)
+
+    return None --> O(1)
+```
+
+Total time complexity = O(1) + O(1) + N*(O(K)+O(1)+O(1)+O(1)+O(1)) + O(1)
+    ```
+    = O(NK)
+    ```
+    
