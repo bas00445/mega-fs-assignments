@@ -1,10 +1,13 @@
 import { useWeb3React } from "@web3-react/core";
 import React from "react";
 import { injected } from "../../components/wallet/connectors";
+import Web3 from "web3";
 
 function Home() {
   const { active, account, library, connector, activate, deactivate } =
-    useWeb3React();
+    useWeb3React<Web3>();
+
+  console.log({ library });
 
   async function connect() {
     try {
