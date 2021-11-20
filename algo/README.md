@@ -57,30 +57,8 @@ Total time complexity = O(1) + O(1) + N*(O(M)+O(1)+O(1)+O(1)+O(1)) + O(1)
     ```
     
 ## Space complexity
-let `N` be number of item in `wordList` and `K` be length of `target` string
-```
-def solve(wordList, target):
-    if (len(wordList) == 0 or (len(wordList) == 1 and wordList[0] == '')): --> O(1)
-        return None
+let `N` be number of item in `wordList`
 
-    pairs = {} --> O(1)
+Total space complexity = O(N)
 
-    for word in wordList:
-        splitWord = target.split(word) --> O(1)
-
-        if (len(splitWord) == 1): --> O(1)
-            # Can't split target by word
-            continue
-
-        matchingWord = splitWord[1] if splitWord[0] == '' else splitWord[0] --> O(1)
-        pairs[matchingWord] = True --> O(1)
-
-        if (word in pairs): --> O(1)
-            if (splitWord[0] == ''):
-                return (word, matchingWord)
-            if (splitWord[1] == ''):
-                return (matchingWord, word)
-
-    return None --> O(1)
-```
-Total space complexity = O(1)
+because the statement `pairs[matchingWord] = True` will allocate new key in dictionary N times in the worst case scenario
