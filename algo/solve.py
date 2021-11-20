@@ -16,9 +16,9 @@ def solve(wordList, target):
 
         if (word in pairs):
             if (splitWord[0] == ''):
-                return (word, splitWord[1])
+                return (word, matchingWord)
             if (splitWord[1] == ''):
-                return (splitWord[0], word)
+                return (matchingWord, word)
 
     return None
 
