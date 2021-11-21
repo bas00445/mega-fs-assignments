@@ -9,6 +9,7 @@ import { SupplyCard } from "../../components/SupplyCard";
 import { Tabs } from "../../components/Tabs";
 
 import { commify } from "@ethersproject/units";
+import { WithdrawCard } from "../../components/WithdrawCard";
 
 const TABS = ["Supply", "Withdraw"];
 
@@ -94,7 +95,7 @@ function Home() {
           <HeaderCardSection cardTitle="APY" body="100.54%" />
         </div>
         <div className="flex w-full justify-center">
-          <SupplyCard />
+          {activeTabIndex === 0 ? <SupplyCard /> : <WithdrawCard />}
         </div>
       </div>
     </div>
