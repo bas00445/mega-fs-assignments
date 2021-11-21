@@ -19,7 +19,7 @@ export function SupplyCard({ ...props }: Props) {
     }
   }
 
-  const [currency, setCurrency] = useState("");
+  const [currency, setCurrency] = useState("ETH");
 
   const handleClickUnlockWallet = () => {
     connect();
