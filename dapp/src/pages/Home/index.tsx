@@ -55,10 +55,10 @@ function Home() {
 
   const getTotalCEthSupply = () => {
     compoundContract.methods
-      .totalSupply()
+      .getCash()
       .call()
       .then((supply) => {
-        setTotalSupply(supply);
+        setTotalSupply(Number(Web3.utils.fromWei(supply)));
       })
       .catch((err) => {
         console.error(err);
