@@ -34,38 +34,8 @@ function Home() {
     }
   }
 
-  async function disconnect() {
-    try {
-      console.log("disconnect");
-      deactivate();
-    } catch (ex) {
-      console.log(ex);
-    }
-  }
-
-  React.useEffect(() => {
-    connect();
-  }, []);
-
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
-      <div className="text-gray-700 text-lg text-center pb-4">{account}</div>
-      {active ? (
-        <button
-          className="p-4 bg-purple-700  text-white rounded-md"
-          onClick={handleClickSeeDetail}
-        >
-          Click to see detail
-        </button>
-      ) : (
-        <button
-          className="p-4 bg-purple-700  text-white rounded-md"
-          onClick={connect}
-        >
-          Connect to MetaMask
-        </button>
-      )}
-    </div>
+    <div className="h-screen flex flex-col items-center justify-center"></div>
   );
 }
 

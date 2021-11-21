@@ -2,10 +2,29 @@ import { useWeb3React } from "@web3-react/core";
 import React from "react";
 import { injected } from "../../components/wallet/connectors";
 import Web3 from "web3";
+import { ERC20_ABI } from "../../abi";
+import { COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
 
 function Home() {
   const { active, account, library, connector, activate, deactivate } =
     useWeb3React<Web3>();
+
+  const handleClickSeeDetail = () => {
+    const compoundContract = new library.eth.Contract(
+      ERC20_ABI,
+      COMPOUND_CONTRACT_ADDRESS
+    );
+
+    compoundContract.methods
+      .name()
+      .call()
+      .then((tx) => {
+        console.log({ tx });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   async function connect() {
     try {
@@ -24,27 +43,28 @@ function Home() {
     }
   }
 
+  React.useEffect(() => {
+    connect();
+  }, []);
+
   return (
-    <div className="flex flex-col items-center justify-center">
-      <button
-        onClick={connect}
-        className="py-2 mt-20 mb-4 text-lg font-bold text-white rounded-lg w-56 bg-blue-600 hover:bg-blue-800"
-      >
-        Connect to MetaMask
-      </button>
+    <div className="h-screen flex flex-col items-center justify-center">
+      <div className="text-gray-700 text-lg text-center pb-4">{account}</div>
       {active ? (
-        <span>
-          Connected with <b>{account}</b>
-        </span>
+        <button
+          className="p-4 bg-purple-700  text-white rounded-md"
+          onClick={handleClickSeeDetail}
+        >
+          Click to see detail
+        </button>
       ) : (
-        <span>Not connected</span>
+        <button
+          className="p-4 bg-purple-700  text-white rounded-md"
+          onClick={connect}
+        >
+          Connect to MetaMask
+        </button>
       )}
-      <button
-        onClick={disconnect}
-        className="py-2 mt-20 mb-4 text-lg font-bold text-white rounded-lg w-56 bg-blue-600 hover:bg-blue-800"
-      >
-        Disconnect
-      </button>
     </div>
   );
 }
