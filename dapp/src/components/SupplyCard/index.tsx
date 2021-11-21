@@ -1,5 +1,5 @@
 import { useWeb3React } from "@web3-react/core";
-import React, { ComponentPropsWithoutRef, useState } from "react";
+import React, { ComponentPropsWithoutRef, useMemo, useState } from "react";
 import Web3 from "web3";
 import { ERC20_ABI } from "../../abi";
 import { PrimaryButton } from "../../common/styles";
@@ -15,7 +15,14 @@ export function SupplyCard({ ...props }: Props) {
 
   const [currency, setCurrency] = useState("ETH");
   const [balance, setBalance] = useState(0);
+  const [totalSupply, setTotalSupply] = useState(0);
   const [amount, setAmount] = useState(0);
+
+  const compoundContract = useMemo(() => {
+    return active
+      ? new library.eth.Contract(ERC20_ABI, COMPOUND_CONTRACT_ADDRESS)
+      : null;
+  }, [library, activate]);
 
   async function connect() {
     try {
@@ -39,17 +46,25 @@ export function SupplyCard({ ...props }: Props) {
     }
   };
 
-  const getCEthBalance = async () => {
-    const compoundContract = new library.eth.Contract(
-      ERC20_ABI,
-      COMPOUND_CONTRACT_ADDRESS
-    );
+  const getTotalCEthSupply = () => {
+    compoundContract.methods
+      .totalSupply()
+      .call()
+      .then((supply) => {
+        console.log({ supply });
+        setTotalSupply(supply);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
-    return compoundContract.methods
+  const getCEthBalance = async () => {
+    compoundContract.methods
       .balanceOf(account)
       .call()
       .then((balance) => {
-        return Web3.utils.fromWei(balance);
+        // return Web3.utils.fromWei(balance);
       });
   };
 
@@ -69,6 +84,7 @@ export function SupplyCard({ ...props }: Props) {
   React.useEffect(() => {
     if (active) {
       getEthBalance();
+      getTotalCEthSupply();
     }
   }, [active]);
 
