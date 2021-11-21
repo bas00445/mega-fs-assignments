@@ -19,7 +19,7 @@ export function SupplyCard({ ...props }: Props) {
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState(0);
   const [amountCEth, setAmountCEth] = useState(0);
-  const { isShowing: isShowingModal, toggle: toggleModal } = useModal(true);
+  const { isShowing: isShowingModal, toggle: toggleModal } = useModal();
 
   const compoundContract = useMemo(() => {
     return active
@@ -41,19 +41,16 @@ export function SupplyCard({ ...props }: Props) {
 
   const calculateCEthAmount = debounce(async () => {
     if (active) {
-      const exchangeRate = await compoundContract.methods
-        .exchangeRateCurrent()
-        .call();
+      const exchangeRate =
+        (await compoundContract.methods.exchangeRateCurrent().call()) / 1e18;
 
       const amountOfCEthInWei = Number(
         Web3.utils.toWei(amount.toString(), "ether")
       );
 
-      const amountCEth = amountOfCEthInWei / exchangeRate;
+      // TODO: Fix crash
+      const amountCEth = (amountOfCEthInWei / exchangeRate) * 1e10;
 
-      console.log({ amountCEth });
-
-      console.log({ amount, amountOfCEthInWei, exchangeRate });
       const result = Web3.utils.fromWei(amountCEth.toFixed(0));
       setAmountCEth(Number(result));
     }
