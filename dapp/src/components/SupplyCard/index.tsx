@@ -14,7 +14,6 @@ export function SupplyCard({ ...props }: Props) {
 
   const [currency, setCurrency] = useState("ETH");
   const [balance, setBalance] = useState(0);
-  const [totalSupply, setTotalSupply] = useState(0);
   const [amount, setAmount] = useState(0);
 
   const compoundContract = useMemo(() => {
@@ -58,19 +57,6 @@ export function SupplyCard({ ...props }: Props) {
       });
   };
 
-  const getTotalCEthSupply = () => {
-    compoundContract.methods
-      .totalSupply()
-      .call()
-      .then((supply) => {
-        console.log({ supply });
-        setTotalSupply(supply);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   const getCEthBalance = async () => {
     compoundContract.methods
       .balanceOf(account)
@@ -102,13 +88,8 @@ export function SupplyCard({ ...props }: Props) {
   React.useEffect(() => {
     if (active) {
       getEthBalance();
-      getTotalCEthSupply();
     }
   }, [active]);
-
-  React.useEffect(() => {
-    connect();
-  }, []);
 
   return (
     <Container
