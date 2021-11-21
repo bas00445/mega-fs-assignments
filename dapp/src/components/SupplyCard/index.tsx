@@ -1,10 +1,15 @@
+import { useWeb3React } from "@web3-react/core";
 import React, { ComponentPropsWithoutRef } from "react";
+import Web3 from "web3";
 import { PrimaryButton } from "../../common/styles";
 import { Container } from "./styled";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {}
 
 export function SupplyCard({ ...props }: Props) {
+  const { active, account, library, connector, activate, deactivate } =
+    useWeb3React<Web3>();
+
   return (
     <Container
       className="bg-white shadow px-6 pt-6 pb-9 rounded-lg "
