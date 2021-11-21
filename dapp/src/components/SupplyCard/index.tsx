@@ -10,8 +10,7 @@ import { Container } from "./styled";
 interface Props extends ComponentPropsWithoutRef<"div"> {}
 
 export function SupplyCard({ ...props }: Props) {
-  const { active, account, library, connector, activate, deactivate } =
-    useWeb3React<Web3>();
+  const { active, account, library, activate } = useWeb3React<Web3>();
 
   const [currency, setCurrency] = useState("ETH");
   const [balance, setBalance] = useState(0);
@@ -46,6 +45,19 @@ export function SupplyCard({ ...props }: Props) {
     }
   };
 
+  const mintToken = () => {
+    const weiUnit = Web3.utils.toWei(amount.toString(), "ether");
+    compoundContract.methods
+      .mint()
+      .send({ from: account, value: weiUnit })
+      .then((tx) => {
+        console.log({ tx });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   const getTotalCEthSupply = () => {
     compoundContract.methods
       .totalSupply()
@@ -64,11 +76,15 @@ export function SupplyCard({ ...props }: Props) {
       .balanceOf(account)
       .call()
       .then((balance) => {
-        // return Web3.utils.fromWei(balance);
+        Web3.utils.fromWei(balance);
       });
   };
 
   const handleClickMaxInput = () => {};
+  const handleClickSupply = () => {
+    console.log("handleClickSupply");
+    mintToken();
+  };
 
   const getEthBalance = () => {
     library.eth
@@ -130,7 +146,7 @@ export function SupplyCard({ ...props }: Props) {
           <div>0 cETH</div>
         </div>
         {active ? (
-          <PrimaryButton>Supply</PrimaryButton>
+          <PrimaryButton onClick={handleClickSupply}>Supply</PrimaryButton>
         ) : (
           <PrimaryButton onClick={handleClickUnlockWallet}>
             Unlock Wallet
