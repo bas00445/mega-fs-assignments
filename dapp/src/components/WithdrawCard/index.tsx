@@ -15,6 +15,15 @@ export function WithdrawCard({ ...props }: Props) {
   const [currency, setCurrency] = useState("ETH");
   const [amount, setAmount] = useState(0);
   const [userDeposited, setUserDeposited] = useState(0);
+  const [temp, setTemp] = useState(0);
+
+  async function connect() {
+    try {
+      await activate(injected);
+    } catch (ex) {
+      console.log(ex);
+    }
+  }
 
   const compoundContract = useMemo(() => {
     return active
@@ -27,6 +36,8 @@ export function WithdrawCard({ ...props }: Props) {
       .balanceOfUnderlying(account)
       .call()
       .then((userDeposited) => {
+        console.log({ userDeposited });
+        setTemp(userDeposited);
         setUserDeposited(Number(Web3.utils.fromWei(userDeposited)));
       })
       .catch((err) => {
@@ -34,8 +45,47 @@ export function WithdrawCard({ ...props }: Props) {
       });
   };
 
+  const redeemToken = async () => {
+    const exchangeRate =
+      (await compoundContract.methods.exchangeRateCurrent().call()) / 1e18;
+
+    const amountOfCEthInWei = Number(
+      Web3.utils.toWei(amount.toString(), "ether")
+    );
+
+    const amountCEth = amountOfCEthInWei / exchangeRate;
+
+    compoundContract.methods
+      .redeem(amountCEth.toFixed(0))
+      .send({ from: account })
+      .then((tx) => {
+        console.log({ tx });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const handleAmountInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = event.target.value;
+
+    if (value) {
+      setAmount(Number(value));
+    }
+  };
+
   const handleClickMaxInput = () => {
     setAmount(userDeposited);
+  };
+
+  const handleClickUnlockWallet = () => {
+    connect();
+  };
+
+  const handleClickWithdraw = () => {
+    redeemToken();
   };
 
   React.useEffect(() => {
@@ -71,7 +121,7 @@ export function WithdrawCard({ ...props }: Props) {
             <input
               type="number"
               value={amount}
-              onChange={() => {}}
+              onChange={handleAmountInputChange}
               className="px-12 text-right bg-gray-100 rounded-lg w-full h-11 border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             />
             <div className="absolute text-lg right-3  text-gray-900">
@@ -84,9 +134,11 @@ export function WithdrawCard({ ...props }: Props) {
           <div>0 cETH</div>
         </div>
         {active ? (
-          <PrimaryButton onClick={() => {}}>Withdraw</PrimaryButton>
+          <PrimaryButton onClick={handleClickWithdraw}>Withdraw</PrimaryButton>
         ) : (
-          <PrimaryButton onClick={() => {}}>) Unlock Wallet</PrimaryButton>
+          <PrimaryButton onClick={handleClickUnlockWallet}>
+            ) Unlock Wallet
+          </PrimaryButton>
         )}
       </div>
     </Container>
