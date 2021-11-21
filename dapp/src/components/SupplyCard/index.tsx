@@ -7,16 +7,18 @@ import { COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
 import { injected } from "../../wallet/connectors";
 import { Container } from "./styled";
 import { debounce } from "lodash-es";
+import { Modal } from "../../components/Modal";
+import useModal from "../../components/Modal/hooks/useModal";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {}
 
 export function SupplyCard({ ...props }: Props) {
   const { active, account, library, activate } = useWeb3React<Web3>();
 
-  const [currency, setCurrency] = useState("ETH");
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState(0);
   const [amountCEth, setAmountCEth] = useState(0);
+  const { isShowing: isShowingModal, toggle: toggleModal } = useModal();
 
   const compoundContract = useMemo(() => {
     return active
@@ -73,6 +75,7 @@ export function SupplyCard({ ...props }: Props) {
       .send({ from: account, value: weiUnit })
       .then((tx) => {
         console.log({ tx });
+        toggleModal();
       })
       .catch((err) => {
         console.error(err);
@@ -133,7 +136,7 @@ export function SupplyCard({ ...props }: Props) {
         </div>
         <div className="flex gap-2 mb-5">
           <div className="bg-gray-100 rounded-lg flex items-center font-medium justify-center text-gray-900 w-16">
-            {currency}
+            ETH
           </div>
           <div className="flex flex-1 relative items-center">
             <div
@@ -148,9 +151,7 @@ export function SupplyCard({ ...props }: Props) {
               onChange={handleAmountInputChange}
               className="px-12 text-right bg-gray-100 rounded-lg w-full h-11 border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             />
-            <div className="absolute text-lg right-3 text-gray-900">
-              {currency}
-            </div>
+            <div className="absolute text-lg right-3 text-gray-900">ETH</div>
           </div>
         </div>
         <div className="flex justify-between text-sm text-gray-500 mb-16">
@@ -165,6 +166,7 @@ export function SupplyCard({ ...props }: Props) {
           </PrimaryButton>
         )}
       </div>
+      <Modal isShowing={true} hide={toggleModal} />
     </Container>
   );
 }
