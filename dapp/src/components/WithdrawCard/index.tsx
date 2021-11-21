@@ -15,7 +15,6 @@ export function WithdrawCard({ ...props }: Props) {
   const [currency, setCurrency] = useState("ETH");
   const [amount, setAmount] = useState(0);
   const [userDeposited, setUserDeposited] = useState(0);
-  const [temp, setTemp] = useState(0);
 
   async function connect() {
     try {
@@ -36,8 +35,6 @@ export function WithdrawCard({ ...props }: Props) {
       .balanceOfUnderlying(account)
       .call()
       .then((userDeposited) => {
-        console.log({ userDeposited });
-        setTemp(userDeposited);
         setUserDeposited(Number(Web3.utils.fromWei(userDeposited)));
       })
       .catch((err) => {
@@ -54,6 +51,8 @@ export function WithdrawCard({ ...props }: Props) {
     );
 
     const amountCEth = amountOfCEthInWei / exchangeRate;
+
+    console.log({ amountOfCEthInWei, exchangeRate });
 
     compoundContract.methods
       .redeem(amountCEth.toFixed(0))
@@ -131,7 +130,7 @@ export function WithdrawCard({ ...props }: Props) {
         </div>
         <div className="flex justify-between text-sm text-gray-500 mb-16">
           <div>Receiving</div>
-          <div>0 cETH</div>
+          {/* <div>{amountCEth} cETH</div> */}
         </div>
         {active ? (
           <PrimaryButton onClick={handleClickWithdraw}>Withdraw</PrimaryButton>
