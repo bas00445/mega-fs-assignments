@@ -40,8 +40,8 @@ export function SupplyCard({ ...props }: Props) {
   ) => {
     const value = event.target.value;
 
-    if (Number(value) >= 0) {
-      setAmount(Number(event.target.value));
+    if (value) {
+      setAmount(Number(value));
     }
   };
 
@@ -80,9 +80,11 @@ export function SupplyCard({ ...props }: Props) {
       });
   };
 
-  const handleClickMaxInput = () => {};
+  const handleClickMaxInput = () => {
+    setAmount(balance);
+  };
+
   const handleClickSupply = () => {
-    console.log("handleClickSupply");
     mintToken();
   };
 
