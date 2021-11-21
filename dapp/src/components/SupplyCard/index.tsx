@@ -6,6 +6,7 @@ import { PrimaryButton } from "../../common/styles";
 import { COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
 import { injected } from "../../wallet/connectors";
 import { Container } from "./styled";
+import { debounce } from "lodash-es";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {}
 
@@ -15,6 +16,7 @@ export function SupplyCard({ ...props }: Props) {
   const [currency, setCurrency] = useState("ETH");
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState(0);
+  const [amountCEth, setAmountCEth] = useState(0);
 
   const compoundContract = useMemo(() => {
     return active
@@ -33,6 +35,26 @@ export function SupplyCard({ ...props }: Props) {
   const handleClickUnlockWallet = () => {
     connect();
   };
+
+  const calculateCEthAmount = debounce(async () => {
+    if (active) {
+      const exchangeRate = await compoundContract.methods
+        .exchangeRateCurrent()
+        .call();
+
+      const amountOfCEthInWei = Number(
+        Web3.utils.toWei(amount.toString(), "ether")
+      );
+
+      const amountCEth = amountOfCEthInWei / exchangeRate;
+
+      console.log({ amountCEth });
+
+      console.log({ amount, amountOfCEthInWei, exchangeRate });
+      const result = Web3.utils.fromWei(amountCEth.toFixed(0));
+      setAmountCEth(Number(result));
+    }
+  }, 500);
 
   const handleAmountInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -91,6 +113,11 @@ export function SupplyCard({ ...props }: Props) {
     }
   }, [active]);
 
+  React.useEffect(() => {
+    console.log({ amount });
+    calculateCEthAmount();
+  }, [amount]);
+
   return (
     <Container
       className="bg-white shadow px-6 pt-6 pb-9 rounded-lg "
@@ -128,7 +155,7 @@ export function SupplyCard({ ...props }: Props) {
         </div>
         <div className="flex justify-between text-sm text-gray-500 mb-16">
           <div>Receiving</div>
-          <div>0 cETH</div>
+          <div>{amountCEth} cETH</div>
         </div>
         {active ? (
           <PrimaryButton onClick={handleClickSupply}>Supply</PrimaryButton>

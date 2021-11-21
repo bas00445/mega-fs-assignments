@@ -28,21 +28,15 @@ function Home() {
 
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
-  const handleClickSeeDetail = () => {
-    const compoundContract = new library.eth.Contract(
-      ERC20_ABI,
-      COMPOUND_CONTRACT_ADDRESS
-    );
+  const getExchangeRateStored = async () => {
+    const exchangeRate = await compoundContract.methods
+      .exchangeRateStored()
+      .call();
 
-    compoundContract.methods
-      .name()
-      .call()
-      .then((tx) => {
-        console.log({ tx });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const totalSupply = await compoundContract.methods.totalSupply().call();
+    const answer = exchangeRate * totalSupply * 4373;
+
+    console.log({ answer });
   };
 
   async function connect() {
@@ -85,6 +79,7 @@ function Home() {
     if (active) {
       getUserSupplied();
       getTotalCEthSupply();
+      getExchangeRateStored();
     }
   }, [active]);
 
