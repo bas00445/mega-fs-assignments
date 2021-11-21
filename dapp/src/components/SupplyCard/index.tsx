@@ -23,6 +23,8 @@ export function SupplyCard({ ...props }: Props) {
     connect();
   };
 
+  const handleClickMaxInput = () => {};
+
   return (
     <Container
       className="bg-white shadow px-6 pt-6 pb-9 rounded-lg "
@@ -38,8 +40,17 @@ export function SupplyCard({ ...props }: Props) {
         </div>
         <div className="flex gap-2 mb-5">
           <div></div>
-          <div className="flex-1">
-            <input className="pl-12 bg-gray-100 rounded-lg w-full h-11 border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" />
+          <div className="flex flex-1 relative items-center">
+            <div
+              className="absolute text-purple-500 text-lg left-3 cursor-pointer"
+              onClick={handleClickMaxInput}
+            >
+              Max
+            </div>
+            <input
+              type="number"
+              className="px-12 text-right bg-gray-100 rounded-lg w-full h-11 border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            />
           </div>
         </div>
         <div className="flex justify-between text-sm text-gray-500 mb-16">
