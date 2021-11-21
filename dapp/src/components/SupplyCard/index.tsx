@@ -1,4 +1,5 @@
 import React, { ComponentPropsWithoutRef } from "react";
+import { PrimaryButton } from "../../common/styles";
 import { Container } from "./styled";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {}
@@ -17,10 +18,11 @@ export function SupplyCard({ ...props }: Props) {
             Balance: 1.02 ETH
           </div>
         </div>
-        <div className="flex justify-between text-sm text-gray-500">
+        <div className="flex justify-between text-sm text-gray-500 mb-16">
           <div>Receiving</div>
           <div>0 cETH</div>
         </div>
+        <PrimaryButton>Unlock Wallet</PrimaryButton>
       </div>
     </Container>
   );
