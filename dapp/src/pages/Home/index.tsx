@@ -5,6 +5,7 @@ import Web3 from "web3";
 import { ERC20_ABI } from "../../abi";
 import { COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
 import { HeaderCardSection } from "../../components/HeaderCardSection";
+import { SupplyCard } from "../../components/SupplyCard";
 
 function Home() {
   const { active, account, library, connector, activate, deactivate } =
@@ -42,10 +43,13 @@ function Home() {
           <div>Supply</div>
           <div>Withdraw</div>
         </div>
-        <div className="flex gap-8 w-full">
+        <div className="flex gap-8 w-full mb-16">
           <HeaderCardSection cardTitle="Your Supplied" body="0 ETH" />
           <HeaderCardSection cardTitle="Total Supplied" body="123 ETH" />
           <HeaderCardSection cardTitle="APY" body="100.54%" />
+        </div>
+        <div className="flex w-full justify-center">
+          <SupplyCard />
         </div>
       </div>
     </div>
