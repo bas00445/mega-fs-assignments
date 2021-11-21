@@ -1,5 +1,5 @@
 import { useWeb3React } from "@web3-react/core";
-import React, { ComponentPropsWithoutRef } from "react";
+import React, { ComponentPropsWithoutRef, useState } from "react";
 import Web3 from "web3";
 import { PrimaryButton } from "../../common/styles";
 import { injected } from "../wallet/connectors";
@@ -18,6 +18,8 @@ export function SupplyCard({ ...props }: Props) {
       console.log(ex);
     }
   }
+
+  const [currency, setCurrency] = useState("");
 
   const handleClickUnlockWallet = () => {
     connect();
@@ -51,6 +53,9 @@ export function SupplyCard({ ...props }: Props) {
               type="number"
               className="px-12 text-right bg-gray-100 rounded-lg w-full h-11 border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             />
+            <div className="absolute text-lg right-3  text-gray-900">
+              {currency}
+            </div>
           </div>
         </div>
         <div className="flex justify-between text-sm text-gray-500 mb-16">
