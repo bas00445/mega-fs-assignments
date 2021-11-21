@@ -47,7 +47,7 @@ function Home() {
 
   return (
     <div className="h-screen bg-gray-50 flex justify-center">
-      <div className="w-4/5">
+      <div className="w-4/5 pt-12">
         <Tabs
           tabs={TABS}
           activeIndex={activeTabIndex}
