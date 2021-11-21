@@ -105,7 +105,9 @@ export function SupplyCard({ ...props }: Props) {
           </div>
         </div>
         <div className="flex gap-2 mb-5">
-          <div></div>
+          <div className="bg-gray-100 rounded-lg flex items-center font-medium justify-center text-gray-900 w-16">
+            {currency}
+          </div>
           <div className="flex flex-1 relative items-center">
             <div
               className="absolute text-purple-500 text-lg left-3 cursor-pointer"
@@ -119,7 +121,7 @@ export function SupplyCard({ ...props }: Props) {
               onChange={handleAmountInputChange}
               className="px-12 text-right bg-gray-100 rounded-lg w-full h-11 border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             />
-            <div className="absolute text-lg right-3  text-gray-900">
+            <div className="absolute text-lg right-3 text-gray-900">
               {currency}
             </div>
           </div>

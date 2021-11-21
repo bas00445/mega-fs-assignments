@@ -30,7 +30,9 @@ export function WithdrawCard({ ...props }: Props) {
           </div>
         </div>
         <div className="flex gap-2 mb-5">
-          <div></div>
+          <div className="bg-gray-100 rounded-lg flex items-center font-medium justify-center text-gray-900 w-16">
+            {currency}
+          </div>
           <div className="flex flex-1 relative items-center">
             <div
               className="absolute text-purple-500 text-lg left-3 cursor-pointer"

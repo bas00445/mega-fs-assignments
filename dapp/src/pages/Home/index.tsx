@@ -18,6 +18,7 @@ function Home() {
     useWeb3React<Web3>();
 
   const [totalSupply, setTotalSupply] = useState(0);
+  const [userSupply, setUserSupply] = useState(0);
 
   const compoundContract = useMemo(() => {
     return active
@@ -64,12 +65,25 @@ function Home() {
       });
   };
 
+  const getUserSupplied = () => {
+    compoundContract.methods
+      .balanceOfUnderlying(account)
+      .call()
+      .then((userSupply) => {
+        setUserSupply(Number(Web3.utils.fromWei(userSupply)));
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   const handleClickTab = (tabIndex: number) => {
     setActiveTabIndex(tabIndex);
   };
 
   React.useEffect(() => {
     if (active) {
+      getUserSupplied();
       getTotalCEthSupply();
     }
   }, [active]);
@@ -87,7 +101,10 @@ function Home() {
           onClickTab={handleClickTab}
         />
         <div className="flex gap-8 w-full mb-16">
-          <HeaderCardSection cardTitle="Your Supplied" body="0 ETH" />
+          <HeaderCardSection
+            cardTitle="Your Supplied"
+            body={`${commify(userSupply)} ETH`}
+          />
           <HeaderCardSection
             cardTitle="Total Supplied"
             body={`${commify(totalSupply)} ETH`}
