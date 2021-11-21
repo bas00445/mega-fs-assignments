@@ -13,8 +13,36 @@ export function WithdrawCard({ ...props }: Props) {
   const { active, account, library, activate } = useWeb3React<Web3>();
 
   const [currency, setCurrency] = useState("ETH");
-  const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState(0);
+  const [userDeposited, setUserDeposited] = useState(0);
+
+  const compoundContract = useMemo(() => {
+    return active
+      ? new library.eth.Contract(ERC20_ABI, COMPOUND_CONTRACT_ADDRESS)
+      : null;
+  }, [library, activate]);
+
+  const getUserSupplied = () => {
+    compoundContract.methods
+      .balanceOfUnderlying(account)
+      .call()
+      .then((userDeposited) => {
+        setUserDeposited(Number(Web3.utils.fromWei(userDeposited)));
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const handleClickMaxInput = () => {
+    setAmount(userDeposited);
+  };
+
+  React.useEffect(() => {
+    if (active) {
+      getUserSupplied();
+    }
+  }, [active]);
 
   return (
     <Container
@@ -26,7 +54,7 @@ export function WithdrawCard({ ...props }: Props) {
         <div className="flex justify-between mb-2">
           <div />
           <div className="justify-self-end text-sm text-gray-500">
-            Balance: {balance} ETH
+            Deposited: {userDeposited} ETH
           </div>
         </div>
         <div className="flex gap-2 mb-5">
@@ -36,7 +64,7 @@ export function WithdrawCard({ ...props }: Props) {
           <div className="flex flex-1 relative items-center">
             <div
               className="absolute text-purple-500 text-lg left-3 cursor-pointer"
-              onClick={() => {}}
+              onClick={handleClickMaxInput}
             >
               Max
             </div>
