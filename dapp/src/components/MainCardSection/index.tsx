@@ -5,11 +5,11 @@ interface Props extends ComponentPropsWithoutRef<"div"> {
   body: React.ReactNode;
 }
 
-export function MainCardSection({ title, body }: Props) {
+export function MainCardSection({ cardTitle, body, ...props }: Props) {
   return (
-    <div className="rounded-lg py-3 px-4 bg-white drop-shadow-md text-gray-900 gap-2">
-      <div>{title}</div>
-      <div>{body}</div>
+    <div className="flex-1 rounded-lg py-3 px-4 bg-white shadow text-gray-900 gap-2">
+      <div className="text-base">{cardTitle}</div>
+      <div className="text-xl">{body}</div>
     </div>
   );
 }

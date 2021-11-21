@@ -4,6 +4,7 @@ import { injected } from "../../components/wallet/connectors";
 import Web3 from "web3";
 import { ERC20_ABI } from "../../abi";
 import { COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
+import { MainCardSection } from "../../components/MainCardSection";
 
 function Home() {
   const { active, account, library, connector, activate, deactivate } =
@@ -36,15 +37,15 @@ function Home() {
 
   return (
     <div className="h-screen bg-gray-50 flex justify-center">
-      <div className="max-w-2xl">
+      <div className="w-4/5">
         <div className="flex gap-6 mb-10">
           <div>Supply</div>
           <div>Withdraw</div>
         </div>
-        <div className="flex">
-          <div></div>
-          <div></div>
-          <div></div>
+        <div className="flex gap-8 w-full">
+          <MainCardSection cardTitle="Your Supplied" body="0 ETH" />
+          <MainCardSection cardTitle="Total Supplied" body="123 ETH" />
+          <MainCardSection cardTitle="APY" body="100.54%" />
         </div>
       </div>
     </div>
