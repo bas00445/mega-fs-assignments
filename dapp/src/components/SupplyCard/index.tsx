@@ -9,6 +9,7 @@ import { Container } from "./styled";
 import { debounce } from "lodash-es";
 import { Modal } from "../../components/Modal";
 import useModal from "../../components/Modal/hooks/useModal";
+import { ReactComponent as CheckIcon } from "../../assets/icons/check.svg";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {}
 
@@ -18,7 +19,7 @@ export function SupplyCard({ ...props }: Props) {
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState(0);
   const [amountCEth, setAmountCEth] = useState(0);
-  const { isShowing: isShowingModal, toggle: toggleModal } = useModal();
+  const { isShowing: isShowingModal, toggle: toggleModal } = useModal(true);
 
   const compoundContract = useMemo(() => {
     return active
@@ -110,6 +111,19 @@ export function SupplyCard({ ...props }: Props) {
       });
   };
 
+  const SuccessModalContent = () => (
+    <div className="flex flex-col items-center">
+      <div className="text-gray-900 text-2xl font-medium mb-4">
+        Transaction Submitted
+      </div>
+      <CheckIcon className="mb-6" />
+      <div className="text-blue-600 underline cursor-pointer mb-7">
+        View on Etherscan
+      </div>
+      <PrimaryButton onClick={toggleModal}>OK</PrimaryButton>
+    </div>
+  );
+
   React.useEffect(() => {
     if (active) {
       getEthBalance();
@@ -166,7 +180,9 @@ export function SupplyCard({ ...props }: Props) {
           </PrimaryButton>
         )}
       </div>
-      <Modal isShowing={true} hide={toggleModal} />
+      <Modal isShowing={isShowingModal} hide={toggleModal}>
+        <SuccessModalContent />
+      </Modal>
     </Container>
   );
 }
