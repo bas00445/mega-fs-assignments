@@ -35,7 +35,19 @@ function Home() {
   }
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center"></div>
+    <div className="h-screen bg-gray-50 flex justify-center">
+      <div className="max-w-2xl">
+        <div className="flex gap-6 mb-10">
+          <div>Supply</div>
+          <div>Withdraw</div>
+        </div>
+        <div className="flex">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
   );
 }
 
