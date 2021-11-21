@@ -1,7 +1,9 @@
 import { useWeb3React } from "@web3-react/core";
 import React, { ComponentPropsWithoutRef, useState } from "react";
 import Web3 from "web3";
+import { ERC20_ABI } from "../../abi";
 import { PrimaryButton } from "../../common/styles";
+import { COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
 import { injected } from "../wallet/connectors";
 import { Container } from "./styled";
 
@@ -12,6 +14,7 @@ export function SupplyCard({ ...props }: Props) {
     useWeb3React<Web3>();
 
   const [currency, setCurrency] = useState("ETH");
+  const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState(0);
 
   async function connect() {
@@ -26,7 +29,6 @@ export function SupplyCard({ ...props }: Props) {
     connect();
   };
 
-  const handleClickMaxInput = () => {};
   const handleAmountInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -36,6 +38,43 @@ export function SupplyCard({ ...props }: Props) {
       setAmount(Number(event.target.value));
     }
   };
+
+  const getCEthBalance = async () => {
+    const compoundContract = new library.eth.Contract(
+      ERC20_ABI,
+      COMPOUND_CONTRACT_ADDRESS
+    );
+
+    return compoundContract.methods
+      .balanceOf(account)
+      .call()
+      .then((balance) => {
+        return Web3.utils.fromWei(balance);
+      });
+  };
+
+  const handleClickMaxInput = () => {};
+
+  const getEthBalance = () => {
+    library.eth
+      .getBalance(account)
+      .then((balance) => {
+        setBalance(Number(Web3.utils.fromWei(balance)));
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  React.useEffect(() => {
+    if (active) {
+      getEthBalance();
+    }
+  }, [active]);
+
+  React.useEffect(() => {
+    connect();
+  }, []);
 
   return (
     <Container
@@ -47,7 +86,7 @@ export function SupplyCard({ ...props }: Props) {
         <div className="flex justify-between mb-2">
           <div />
           <div className="justify-self-end text-sm text-gray-500">
-            Balance: 1.02 ETH
+            Balance: {balance} ETH
           </div>
         </div>
         <div className="flex gap-2 mb-5">
