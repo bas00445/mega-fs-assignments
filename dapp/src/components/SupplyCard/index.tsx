@@ -11,6 +11,9 @@ export function SupplyCard({ ...props }: Props) {
   const { active, account, library, connector, activate, deactivate } =
     useWeb3React<Web3>();
 
+  const [currency, setCurrency] = useState("ETH");
+  const [amount, setAmount] = useState(0);
+
   async function connect() {
     try {
       await activate(injected);
@@ -19,13 +22,20 @@ export function SupplyCard({ ...props }: Props) {
     }
   }
 
-  const [currency, setCurrency] = useState("ETH");
-
   const handleClickUnlockWallet = () => {
     connect();
   };
 
   const handleClickMaxInput = () => {};
+  const handleAmountInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = event.target.value;
+
+    if (Number(value) >= 0) {
+      setAmount(Number(event.target.value));
+    }
+  };
 
   return (
     <Container
@@ -51,6 +61,8 @@ export function SupplyCard({ ...props }: Props) {
             </div>
             <input
               type="number"
+              value={amount}
+              onChange={handleAmountInputChange}
               className="px-12 text-right bg-gray-100 rounded-lg w-full h-11 border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             />
             <div className="absolute text-lg right-3  text-gray-900">
