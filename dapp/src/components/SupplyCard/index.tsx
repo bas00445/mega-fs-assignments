@@ -4,7 +4,7 @@ import Web3 from "web3";
 import { ERC20_ABI } from "../../abi";
 import { PrimaryButton } from "../../common/styles";
 import { COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
-import { injected } from "../wallet/connectors";
+import { injected } from "../../wallet/connectors";
 import { Container } from "./styled";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {}

@@ -1,6 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
 import React from "react";
-import { injected } from "../../components/wallet/connectors";
+import { injected } from "../../wallet/connectors";
 import Web3 from "web3";
 import { ERC20_ABI } from "../../abi";
 import { COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
