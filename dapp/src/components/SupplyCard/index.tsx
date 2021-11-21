@@ -2,6 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import React, { ComponentPropsWithoutRef } from "react";
 import Web3 from "web3";
 import { PrimaryButton } from "../../common/styles";
+import { injected } from "../wallet/connectors";
 import { Container } from "./styled";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {}
@@ -9,6 +10,18 @@ interface Props extends ComponentPropsWithoutRef<"div"> {}
 export function SupplyCard({ ...props }: Props) {
   const { active, account, library, connector, activate, deactivate } =
     useWeb3React<Web3>();
+
+  async function connect() {
+    try {
+      await activate(injected);
+    } catch (ex) {
+      console.log(ex);
+    }
+  }
+
+  const handleClickUnlockWallet = () => {
+    connect();
+  };
 
   return (
     <Container
@@ -27,7 +40,13 @@ export function SupplyCard({ ...props }: Props) {
           <div>Receiving</div>
           <div>0 cETH</div>
         </div>
-        <PrimaryButton>Unlock Wallet</PrimaryButton>
+        {active ? (
+          <PrimaryButton>Supply</PrimaryButton>
+        ) : (
+          <PrimaryButton onClick={handleClickUnlockWallet}>
+            Unlock Wallet
+          </PrimaryButton>
+        )}
       </div>
     </Container>
   );
