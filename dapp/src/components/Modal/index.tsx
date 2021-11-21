@@ -1,21 +1,20 @@
-import React from "react";
+import React, { ComponentPropsWithoutRef } from "react";
 import ReactDOM from "react-dom";
 
-import "./index.css";
+import { ModalContent, ModalOverlay, ModalWrapper } from "./styled";
 
-export function Modal({ isShowing, hide }) {
+interface Props extends ComponentPropsWithoutRef<"div"> {
+  isShowing: boolean;
+  hide: () => void;
+}
+
+export function Modal({ isShowing, hide }: Props) {
   return isShowing
     ? ReactDOM.createPortal(
         <React.Fragment>
-          <div className="modal-overlay" />
-          <div
-            className="modal-wrapper"
-            aria-modal
-            aria-hidden
-            tabIndex={-1}
-            role="dialog"
-          >
-            <div className="modal">
+          <ModalOverlay />
+          <ModalWrapper aria-modal aria-hidden tabIndex={-1} role="dialog">
+            <ModalContent>
               <div className="modal-header">
                 <button
                   type="button"
@@ -28,8 +27,8 @@ export function Modal({ isShowing, hide }) {
                 </button>
               </div>
               <p>Hello, I'm a modal.</p>
-            </div>
-          </div>
+            </ModalContent>
+          </ModalWrapper>
         </React.Fragment>,
         document.body
       )
