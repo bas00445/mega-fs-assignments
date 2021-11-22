@@ -60,6 +60,7 @@ function Home() {
   const calculateApy = async () => {
     const RinkebySecPerBlock = 15; // 15 seconds
     const RinkebyBlockPerSec = 1 / RinkebySecPerBlock;
+    const BlocksPerDay = 24 * 60 * 60 * RinkebyBlockPerSec;
 
     const SecPerYear = 3.156e7;
 
@@ -71,16 +72,14 @@ function Home() {
     const TotalSuppliedAmount = await compoundContract.methods
       .totalSupply()
       .call(); // Wei unit
-    const SupplyAPY = (SupplyRatePerBlock * BlockPerYear) / TotalSuppliedAmount; // In decimal
+    const SupplyAPY = SupplyRatePerBlock * BlockPerYear; // In decimal
 
-    console.log({
-      SupplyRatePerBlock,
-      BlockPerYear,
-      TotalSuppliedAmount,
-      SupplyAPY: SupplyAPY / 1e18,
-    });
+    const R =
+      100 * (Math.pow(SupplyRatePerBlock * BlocksPerDay + 1, 365 - 1) - 1);
 
-    setPercentApy(SupplyAPY * 100);
+    console.log({ R });
+
+    // setPercentApy(SupplyAPY * 100);
   };
 
   const getTotalCEthSupply = () => {
