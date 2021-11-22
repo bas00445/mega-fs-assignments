@@ -40,6 +40,9 @@ class TestSolve(unittest.TestCase):
     def test_solve_case12(self):
         self.assertEqual(solve(["abb", "bc", "cd"], "cdabb"), ("cd", "abb"))
 
+    def test_solve_case13(self):
+        self.assertEqual(solve(["ab", "ab", "cd"], "abab"), None)
+
 
 if __name__ == '__main__':
     unittest.main()
