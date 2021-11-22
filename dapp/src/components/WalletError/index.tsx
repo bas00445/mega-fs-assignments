@@ -8,10 +8,13 @@ interface Props extends ComponentPropsWithoutRef<"div"> {
 
 export function WalletError({ message, ...props }: Props) {
   return (
-    <Container className="bg-white shadow px-6 pt-6 pb-9 rounded-lg" {...props}>
+    <Container
+      className="bg-white shadow px-6 pt-6 pb-9 rounded-lg flex items-center flex-col"
+      {...props}
+    >
       <FailIcon className="mb-4" />
-      <div className="text-2xl text-red-500 text-center">
-        {message || "Something went wrong..."}
+      <div className="text-xl text-red-500">
+        {message || "Something went wrong...pls check your wallet"}
       </div>
     </Container>
   );

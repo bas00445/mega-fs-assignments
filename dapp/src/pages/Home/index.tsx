@@ -5,6 +5,7 @@ import Web3 from "web3";
 import { ERC20_ABI } from "../../abi";
 import { HeaderCardSection } from "../../components/HeaderCardSection";
 import { Tabs } from "../../components/Tabs";
+import { WalletError } from "../../components/WalletError";
 import { RINKEBY_COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
 import { injected } from "../../wallet/connectors";
 import { useTabTransition } from "./hooks/useTabTransition";
@@ -116,19 +117,24 @@ function Home() {
           />
         </div>
         <div className="flex w-full justify-center">
-          {transitionAnim((style, item) =>
-            item ? (
-              <WithdrawCardAnim
-                className="bg-white shadow px-6 pt-6 pb-9 rounded-lg"
-                style={style}
-              />
-            ) : (
-              <SupplyCardAnim
-                className="bg-white shadow px-6 pt-6 pb-9 rounded-lg"
-                style={style}
-              />
+          {error ? (
+            <WalletError />
+          ) : (
+            transitionAnim((style, item) =>
+              item ? (
+                <WithdrawCardAnim
+                  className="bg-white shadow px-6 pt-6 pb-9 rounded-lg"
+                  style={style}
+                />
+              ) : (
+                <SupplyCardAnim
+                  className="bg-white shadow px-6 pt-6 pb-9 rounded-lg"
+                  style={style}
+                />
+              )
             )
           )}
+          {}
         </div>
       </div>
     </div>
