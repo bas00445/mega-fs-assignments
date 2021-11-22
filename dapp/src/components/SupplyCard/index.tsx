@@ -2,17 +2,16 @@ import { useWeb3React } from "@web3-react/core";
 import React, { ComponentPropsWithoutRef, useMemo, useState } from "react";
 import Web3 from "web3";
 import { ERC20_ABI } from "../../abi";
-import { PrimaryButton } from "../../common/styles";
-import { RINKEBY_COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
-import { injected } from "../../wallet/connectors";
-import { Container } from "./styled";
-import { debounce } from "lodash-es";
-import { Modal } from "../../components/Modal";
-import useModal from "../../components/Modal/hooks/useModal";
 import { ReactComponent as CheckIcon } from "../../assets/icons/check.svg";
 import { ReactComponent as FailIcon } from "../../assets/icons/fail.svg";
 import { ReactComponent as SpinnerIcon } from "../../assets/icons/spinner.svg";
+import { PrimaryButton } from "../../common/styles";
+import { Modal } from "../../components/Modal";
+import useModal from "../../components/Modal/hooks/useModal";
+import { RINKEBY_COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
 import { State } from "../../types";
+import { injected } from "../../wallet/connectors";
+import { Container } from "./styled";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {}
 
@@ -45,7 +44,7 @@ export function SupplyCard({ ...props }: Props) {
     connect();
   };
 
-  const calculateCEthAmount = debounce(async () => {
+  const calculateCEthAmount = async () => {
     if (active) {
       const exchangeRate =
         (await compoundContract.methods.exchangeRateCurrent().call()) / 1e18;
@@ -53,7 +52,7 @@ export function SupplyCard({ ...props }: Props) {
       const amountOfCEth = (amount / exchangeRate) * 1e10;
       setAmountCEth(amountOfCEth);
     }
-  }, 500);
+  };
 
   const handleAmountInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -139,7 +138,6 @@ export function SupplyCard({ ...props }: Props) {
   }, [active]);
 
   React.useEffect(() => {
-    console.log({ amount });
     calculateCEthAmount();
   }, [amount]);
 
