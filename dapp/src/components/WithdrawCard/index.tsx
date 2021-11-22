@@ -24,6 +24,8 @@ export function WithdrawCard({ ...props }: Props) {
   const [currency, setCurrency] = useState("ETH");
   const [amount, setAmount] = useState(0);
   const [userDeposited, setUserDeposited] = useState(0);
+  const [ethPrice, setEthPrice] = useState(0);
+
   const [tx, setTx] = useState("");
   const [redeemState, setRedeemState] = useState(State.Idle);
 
@@ -137,7 +139,6 @@ export function WithdrawCard({ ...props }: Props) {
   const disabledSupplyButton = React.useMemo(() => amount <= 0, [amount]);
 
   const getPrice = () => {
-    const addr = "0x9326BFA02ADD2366b30bacB125260Af641031331";
     const priceFeed = new library.eth.Contract(
       AGGREGATOR_V3_INTERFACE_ABI,
       RINKEBY_ETH_PRICE_FEED_ADDRESS
@@ -147,7 +148,7 @@ export function WithdrawCard({ ...props }: Props) {
       .latestRoundData()
       .call()
       .then((roundData) => {
-        console.log("Latest Round Data", roundData);
+        setEthPrice(roundData.answer / 1e8);
       })
       .catch((err) => {
         console.error(err);
@@ -194,8 +195,11 @@ export function WithdrawCard({ ...props }: Props) {
           </div>
         </div>
         <div className="flex justify-between text-sm text-gray-500 mb-16">
-          <div>Receiving</div>
-          {/* <div>{amountCEth} cETH</div> */}
+          <div className="flex justify-center gap-2">
+            <div>Receiving:</div>
+            <div>{amount} ETH</div>
+          </div>
+          <div>~ ${(ethPrice * amount).toFixed(2)}</div>
         </div>
         {active ? (
           <PrimaryButton
