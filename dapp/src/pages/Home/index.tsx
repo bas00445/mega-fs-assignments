@@ -61,25 +61,27 @@ function Home() {
     const RinkebySecPerBlock = 15; // 15 seconds
     const RinkebyBlockPerSec = 1 / RinkebySecPerBlock;
     const BlocksPerDay = 24 * 60 * 60 * RinkebyBlockPerSec;
+    const DaysInYear = 365;
 
-    const SecPerYear = 3.156e7;
+    // const SecPerYear = 3.156e7;
 
-    const BlockPerYear = RinkebyBlockPerSec * SecPerYear;
+    // const BlockPerYear = RinkebyBlockPerSec * SecPerYear;
 
     const SupplyRatePerBlock =
       (await compoundContract.methods.supplyRatePerBlock().call()) / 1e18;
 
-    const TotalSuppliedAmount = await compoundContract.methods
-      .totalSupply()
-      .call(); // Wei unit
-    const SupplyAPY = SupplyRatePerBlock * BlockPerYear; // In decimal
+    // const TotalSuppliedAmount = await compoundContract.methods
+    //   .totalSupply()
+    //   .call(); // Wei unit
+    // const SupplyAPY = SupplyRatePerBlock * BlockPerYear; // In decimal
 
     const R =
-      100 * (Math.pow(SupplyRatePerBlock * BlocksPerDay + 1, 365 - 1) - 1);
+      100 *
+      (Math.pow(SupplyRatePerBlock * BlocksPerDay + 1, DaysInYear - 1) - 1);
 
     console.log({ R });
 
-    // setPercentApy(SupplyAPY * 100);
+    setPercentApy(R);
   };
 
   const getTotalCEthSupply = () => {
