@@ -22,6 +22,7 @@ export function SupplyCard({ ...props }: Props) {
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState(0);
   const [amountCEth, setAmountCEth] = useState(0);
+  const [tx, setTx] = useState("");
   const [mintState, setMintState] = useState(State.Idle);
 
   const { isShowing: isShowingModal, toggle: toggleModal } = useModal();
@@ -73,6 +74,7 @@ export function SupplyCard({ ...props }: Props) {
       .send({ from: account, value: weiUnit })
       .then((tx) => {
         setMintState(State.Idle);
+        setTx(tx.transactionHash);
         console.log({ tx });
       })
       .catch((err) => {
@@ -115,11 +117,18 @@ export function SupplyCard({ ...props }: Props) {
         {mintState === State.Error && <FailIcon />}
       </div>
       {mintState === State.Idle && (
-        <div className="text-blue-600 underline cursor-pointer mb-7">
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href={`https://rinkeby.etherscan.io/tx/${tx}`}
+          className="text-blue-600 underline cursor-pointer mb-7"
+        >
           View on Etherscan
-        </div>
+        </a>
       )}
-      <PrimaryButton onClick={toggleModal}>OK</PrimaryButton>
+      {(mintState === State.Idle || mintState === State.Error) && (
+        <PrimaryButton onClick={toggleModal}>OK</PrimaryButton>
+      )}
     </div>
   );
 
