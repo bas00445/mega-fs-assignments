@@ -1,17 +1,17 @@
+import { commify } from "@ethersproject/units";
 import { useWeb3React } from "@web3-react/core";
 import React, { useMemo, useState } from "react";
-import { injected } from "../../wallet/connectors";
+import { useTransition } from "react-spring";
 import Web3 from "web3";
 import { ERC20_ABI } from "../../abi";
-import { RINKEBY_COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
 import { HeaderCardSection } from "../../components/HeaderCardSection";
-import { SupplyCard } from "../../components/SupplyCard";
 import { Tabs } from "../../components/Tabs";
-
-import { commify } from "@ethersproject/units";
-import { WithdrawCard } from "../../components/WithdrawCard";
+import { RINKEBY_COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
+import { injected } from "../../wallet/connectors";
+import { SupplyCardAnim, WithdrawCardAnim } from "./styled";
 
 const TABS = ["Supply", "Withdraw"];
+const TRANSITION_X_OFFSET = 200;
 
 function Home() {
   const { active, account, library, connector, activate, deactivate } =
@@ -28,6 +28,22 @@ function Home() {
   }, [library, activate]);
 
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+
+  const transitionAnim = useTransition(activeTabIndex, {
+    from: {
+      position: "absolute",
+      opacity: 0,
+      x: activeTabIndex ? TRANSITION_X_OFFSET : -TRANSITION_X_OFFSET,
+    },
+    enter: {
+      opacity: 1,
+      x: 0,
+    },
+    leave: {
+      opacity: 0,
+      x: activeTabIndex ? -TRANSITION_X_OFFSET : TRANSITION_X_OFFSET,
+    },
+  });
 
   async function connect() {
     try {
@@ -126,7 +142,20 @@ function Home() {
           />
         </div>
         <div className="flex w-full justify-center">
-          {activeTabIndex === 0 ? <SupplyCard /> : <WithdrawCard />}
+          {/* {activeTabIndex === 0 ? <SupplyCard /> : <WithdrawCard />} */}
+          {transitionAnim((style, item) =>
+            item ? (
+              <WithdrawCardAnim
+                className="bg-white shadow px-6 pt-6 pb-9 rounded-lg"
+                style={style}
+              />
+            ) : (
+              <SupplyCardAnim
+                className="bg-white shadow px-6 pt-6 pb-9 rounded-lg"
+                style={style}
+              />
+            )
+          )}
         </div>
       </div>
     </div>
