@@ -106,6 +106,32 @@ export function WithdrawCard({ ...props }: Props) {
     redeemToken();
   };
 
+  const disabledSupplyButton = React.useMemo(() => amount <= 0, [amount]);
+
+  const getPrice = () => {
+    const priceFeed = new library.eth.Contract(
+      AGGREGATOR_V3_INTERFACE_ABI,
+      RINKEBY_ETH_PRICE_FEED_ADDRESS
+    );
+
+    priceFeed.methods
+      .latestRoundData()
+      .call()
+      .then((roundData) => {
+        setEthPrice(roundData.answer / 1e8);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  React.useEffect(() => {
+    if (active) {
+      getUserSupplied();
+      getPrice();
+    }
+  }, [active]);
+
   const ModalContent = () => (
     <div className="flex flex-col items-center">
       <div className="text-gray-900 text-2xl font-medium mb-4">
@@ -135,32 +161,6 @@ export function WithdrawCard({ ...props }: Props) {
       )}
     </div>
   );
-
-  const disabledSupplyButton = React.useMemo(() => amount <= 0, [amount]);
-
-  const getPrice = () => {
-    const priceFeed = new library.eth.Contract(
-      AGGREGATOR_V3_INTERFACE_ABI,
-      RINKEBY_ETH_PRICE_FEED_ADDRESS
-    );
-
-    priceFeed.methods
-      .latestRoundData()
-      .call()
-      .then((roundData) => {
-        setEthPrice(roundData.answer / 1e8);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
-  React.useEffect(() => {
-    if (active) {
-      getUserSupplied();
-      getPrice();
-    }
-  }, [active]);
 
   return (
     <Container className="bg-white shadow px-6 pt-6 pb-9 rounded-lg" {...props}>

@@ -101,6 +101,18 @@ export function SupplyCard({ ...props }: Props) {
       });
   };
 
+  const disabledSupplyButton = React.useMemo(() => amount <= 0, [amount]);
+
+  React.useEffect(() => {
+    if (active) {
+      getEthBalance();
+    }
+  }, [active]);
+
+  React.useEffect(() => {
+    calculateCEthAmount();
+  }, [amount]);
+
   const ModalContent = () => (
     <div className="flex flex-col items-center">
       <div className="text-gray-900 text-2xl font-medium mb-4">
@@ -130,18 +142,6 @@ export function SupplyCard({ ...props }: Props) {
       )}
     </div>
   );
-
-  const disabledSupplyButton = React.useMemo(() => amount <= 0, [amount]);
-
-  React.useEffect(() => {
-    if (active) {
-      getEthBalance();
-    }
-  }, [active]);
-
-  React.useEffect(() => {
-    calculateCEthAmount();
-  }, [amount]);
 
   return (
     <Container className="bg-white shadow px-6 pt-6 pb-9 rounded-lg" {...props}>
