@@ -116,7 +116,6 @@ function Home() {
           />
         </div>
         <div className="flex w-full justify-center">
-          {/* {activeTabIndex === 0 ? <SupplyCard /> : <WithdrawCard />} */}
           {transitionAnim((style, item) =>
             item ? (
               <WithdrawCardAnim
