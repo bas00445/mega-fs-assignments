@@ -1,12 +1,15 @@
 import { useWeb3React } from "@web3-react/core";
 import React, { ComponentPropsWithoutRef, useMemo, useState } from "react";
 import Web3 from "web3";
-import { ERC20_ABI } from "../../abi";
+import { AGGREGATOR_V3_INTERFACE_ABI, ERC20_ABI } from "../../abi";
 import { ReactComponent as CheckIcon } from "../../assets/icons/check.svg";
 import { ReactComponent as FailIcon } from "../../assets/icons/fail.svg";
 import { ReactComponent as SpinnerIcon } from "../../assets/icons/spinner.svg";
 import { PrimaryButton } from "../../common/styles";
-import { RINKEBY_COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
+import {
+  RINKEBY_COMPOUND_CONTRACT_ADDRESS,
+  RINKEBY_ETH_PRICE_FEED_ADDRESS,
+} from "../../contracts";
 import { State } from "../../types";
 import { injected } from "../../wallet/connectors";
 import { Modal } from "../Modal";
@@ -133,9 +136,28 @@ export function WithdrawCard({ ...props }: Props) {
 
   const disabledSupplyButton = React.useMemo(() => amount <= 0, [amount]);
 
+  const getPrice = () => {
+    const addr = "0x9326BFA02ADD2366b30bacB125260Af641031331";
+    const priceFeed = new library.eth.Contract(
+      AGGREGATOR_V3_INTERFACE_ABI,
+      RINKEBY_ETH_PRICE_FEED_ADDRESS
+    );
+
+    priceFeed.methods
+      .latestRoundData()
+      .call()
+      .then((roundData) => {
+        console.log("Latest Round Data", roundData);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   React.useEffect(() => {
     if (active) {
       getUserSupplied();
+      getPrice();
     }
   }, [active]);
 
