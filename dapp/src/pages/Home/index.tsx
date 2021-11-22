@@ -132,7 +132,7 @@ function Home() {
           activeIndex={activeTabIndex}
           onClickTab={handleClickTab}
         />
-        <div className="flex gap-8 w-full mb-16">
+        <div className="flex gap-8 w-full mb-16 flex-wrap">
           <HeaderCardSection
             cardTitle="Your Supplied"
             body={`${commify(userSupply)} ETH`}
