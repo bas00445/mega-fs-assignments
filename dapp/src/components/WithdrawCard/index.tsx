@@ -2,9 +2,15 @@ import { useWeb3React } from "@web3-react/core";
 import React, { ComponentPropsWithoutRef, useMemo, useState } from "react";
 import Web3 from "web3";
 import { ERC20_ABI } from "../../abi";
+import { ReactComponent as CheckIcon } from "../../assets/icons/check.svg";
+import { ReactComponent as FailIcon } from "../../assets/icons/fail.svg";
+import { ReactComponent as SpinnerIcon } from "../../assets/icons/spinner.svg";
 import { PrimaryButton } from "../../common/styles";
 import { RINKEBY_COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
+import { State } from "../../types";
 import { injected } from "../../wallet/connectors";
+import { Modal } from "../Modal";
+import useModal from "../Modal/hooks/useModal";
 import { Container } from "./styled";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {}
@@ -15,6 +21,10 @@ export function WithdrawCard({ ...props }: Props) {
   const [currency, setCurrency] = useState("ETH");
   const [amount, setAmount] = useState(0);
   const [userDeposited, setUserDeposited] = useState(0);
+  const [tx, setTx] = useState("");
+  const [redeemState, setRedeemState] = useState(State.Idle);
+
+  const { isShowing: isShowingModal, toggle: toggleModal } = useModal();
 
   async function connect() {
     try {
@@ -43,6 +53,9 @@ export function WithdrawCard({ ...props }: Props) {
   };
 
   const redeemToken = async () => {
+    toggleModal();
+    setRedeemState(State.Loading);
+
     const exchangeRate =
       (await compoundContract.methods.exchangeRateCurrent().call()) / 1e18;
 
@@ -52,15 +65,16 @@ export function WithdrawCard({ ...props }: Props) {
 
     const amountCEth = amountOfCEthInWei / exchangeRate;
 
-    console.log({ amountOfCEthInWei, exchangeRate });
-
     compoundContract.methods
       .redeem(amountCEth.toFixed(0))
       .send({ from: account })
       .then((tx) => {
+        setRedeemState(State.Idle);
+        setTx(tx.transactionHash);
         console.log({ tx });
       })
       .catch((err) => {
+        setRedeemState(State.Error);
         console.error(err);
       });
   };
@@ -86,6 +100,36 @@ export function WithdrawCard({ ...props }: Props) {
   const handleClickWithdraw = () => {
     redeemToken();
   };
+
+  const ModalContent = () => (
+    <div className="flex flex-col items-center">
+      <div className="text-gray-900 text-2xl font-medium mb-4">
+        {redeemState === State.Loading && "Submitting Transaction..."}
+        {redeemState === State.Idle && "Transaction Submitted"}
+        {redeemState === State.Error && "Transaction Failed"}
+      </div>
+      <div className="mb-6">
+        {redeemState === State.Loading && (
+          <SpinnerIcon className="animate-spin" />
+        )}
+        {redeemState === State.Idle && <CheckIcon />}
+        {redeemState === State.Error && <FailIcon />}
+      </div>
+      {redeemState === State.Idle && (
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href={`https://rinkeby.etherscan.io/tx/${tx}`}
+          className="text-blue-600 underline cursor-pointer mb-7"
+        >
+          View on Etherscan
+        </a>
+      )}
+      {(redeemState === State.Idle || redeemState === State.Error) && (
+        <PrimaryButton onClick={toggleModal}>OK</PrimaryButton>
+      )}
+    </div>
+  );
 
   React.useEffect(() => {
     if (active) {
@@ -140,6 +184,9 @@ export function WithdrawCard({ ...props }: Props) {
           </PrimaryButton>
         )}
       </div>
+      <Modal isShowing={isShowingModal} hide={toggleModal}>
+        <ModalContent />
+      </Modal>
     </Container>
   );
 }
