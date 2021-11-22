@@ -87,10 +87,10 @@ export function WithdrawCard({ ...props }: Props) {
   const handleAmountInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const value = event.target.value;
+    const value = Number(event.target.value);
 
-    if (value) {
-      setAmount(Number(value));
+    if (value >= 0) {
+      setAmount(value);
     }
   };
 
@@ -165,11 +165,13 @@ export function WithdrawCard({ ...props }: Props) {
   return (
     <Container className="bg-white shadow px-6 pt-6 pb-9 rounded-lg" {...props}>
       <div className="w-full">
-        <div className="text-2xl text-gray-900 mb-4">Withdraw</div>
+        <div className="text-3xl text-gray-900 mb-8 font-medium text-center">
+          Withdraw
+        </div>
         <div className="flex justify-between mb-2">
           <div />
           <div className="justify-self-end text-sm text-gray-500">
-            Deposited: {userDeposited} ETH
+            Deposited: {userDeposited} {currency}
           </div>
         </div>
         <div className="flex gap-2 mb-5">
@@ -197,7 +199,9 @@ export function WithdrawCard({ ...props }: Props) {
         <div className="flex justify-between text-sm text-gray-500 mb-16">
           <div className="flex justify-center gap-2">
             <div>Receiving:</div>
-            <div>{amount} ETH</div>
+            <div>
+              {amount} {currency}
+            </div>
           </div>
           <div>~ ${(ethPrice * amount).toFixed(2)}</div>
         </div>

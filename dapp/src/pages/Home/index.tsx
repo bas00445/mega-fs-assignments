@@ -123,12 +123,12 @@ function Home() {
             transitionAnim((style, item) =>
               item ? (
                 <WithdrawCardAnim
-                  className="bg-white shadow px-6 pt-6 pb-9 rounded-lg"
+                  className="bg-white shadow px-6 py-9 rounded-lg"
                   style={style}
                 />
               ) : (
                 <SupplyCardAnim
-                  className="bg-white shadow px-6 pt-6 pb-9 rounded-lg"
+                  className="bg-white shadow px-6 py-9 rounded-lg"
                   style={style}
                 />
               )

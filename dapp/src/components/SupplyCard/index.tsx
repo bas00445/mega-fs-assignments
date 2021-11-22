@@ -18,6 +18,7 @@ interface Props extends ComponentPropsWithoutRef<"div"> {}
 export function SupplyCard({ ...props }: Props) {
   const { active, account, library, activate } = useWeb3React<Web3>();
 
+  const [currency, setCurrency] = useState("ETH");
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState(0);
   const [amountCEth, setAmountCEth] = useState(0);
@@ -57,10 +58,10 @@ export function SupplyCard({ ...props }: Props) {
   const handleAmountInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const value = event.target.value;
+    const value = Number(event.target.value);
 
-    if (value) {
-      setAmount(Number(value));
+    if (value >= 0) {
+      setAmount(value);
     }
   };
 
@@ -146,16 +147,19 @@ export function SupplyCard({ ...props }: Props) {
   return (
     <Container className="bg-white shadow px-6 pt-6 pb-9 rounded-lg" {...props}>
       <div className="w-full">
-        <div className="text-2xl text-gray-900 mb-4">Supply</div>
+        <div className="text-3xl text-gray-900 mb-8 font-medium text-center">
+          Supply
+        </div>
+        <div className=""></div>
         <div className="flex justify-between mb-2">
           <div />
           <div className="justify-self-end text-sm text-gray-500">
-            Balance: {balance} ETH
+            Balance: {balance} {currency}
           </div>
         </div>
         <div className="flex gap-2 mb-5">
           <div className="bg-gray-100 rounded-lg flex items-center font-medium justify-center text-gray-900 w-16">
-            ETH
+            {currency}
           </div>
           <div className="flex flex-1 relative items-center">
             <div
@@ -170,7 +174,9 @@ export function SupplyCard({ ...props }: Props) {
               onChange={handleAmountInputChange}
               className="px-12 text-right bg-gray-100 rounded-lg w-full h-11 border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             />
-            <div className="absolute text-lg right-3 text-gray-900">ETH</div>
+            <div className="absolute text-lg right-3 text-gray-900">
+              {currency}
+            </div>
           </div>
         </div>
         <div className="flex justify-between text-sm text-gray-500 mb-16">
