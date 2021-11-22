@@ -147,10 +147,12 @@ export function SupplyCard({ ...props }: Props) {
   return (
     <Container className="bg-white shadow px-6 pt-6 pb-9 rounded-lg" {...props}>
       <div className="w-full">
-        <div className="text-3xl text-gray-900 mb-8 font-medium text-center">
-          Supply
+        <div className="flex flex-col items-center mb-8 ">
+          <div className="text-3xl text-gray-900 mb-8 font-medium text-center">
+            Supply
+          </div>
+          <div className="border w-full border-gray-100" />
         </div>
-        <div className=""></div>
         <div className="flex justify-between mb-2">
           <div />
           <div className="justify-self-end text-sm text-gray-500">
