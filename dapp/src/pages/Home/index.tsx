@@ -43,6 +43,10 @@ function Home() {
       opacity: 0,
       x: activeTabIndex ? -TRANSITION_X_OFFSET : TRANSITION_X_OFFSET,
     },
+    initial: {
+      opacity: 1,
+      x: 0,
+    },
   });
 
   async function connect() {
