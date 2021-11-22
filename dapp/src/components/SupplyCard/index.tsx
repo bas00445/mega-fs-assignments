@@ -49,15 +49,8 @@ export function SupplyCard({ ...props }: Props) {
       const exchangeRate =
         (await compoundContract.methods.exchangeRateCurrent().call()) / 1e18;
 
-      const amountOfCEthInWei = Number(
-        Web3.utils.toWei(amount.toString(), "ether")
-      );
-
-      // TODO: Fix crash
-      const amountCEth = (amountOfCEthInWei / exchangeRate) * 1e10;
-
-      const result = Web3.utils.fromWei(amountCEth.toFixed(0));
-      setAmountCEth(Number(result));
+      const amountOfCEth = (amount / exchangeRate) * 1e10;
+      setAmountCEth(amountOfCEth);
     }
   }, 500);
 
