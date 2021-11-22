@@ -58,7 +58,7 @@ function Home() {
   }
 
   const calculateApy = async () => {
-    const rinkebySecPerBlock = 13.59; // 13.59 seconds
+    const rinkebySecPerBlock = 13.59; // 13.59 seconds estimated
     const rinkebyBlockPerSec = 1 / rinkebySecPerBlock;
     const rlocksPerDay = 24 * 60 * 60 * rinkebyBlockPerSec;
     const daysInYear = 365;
