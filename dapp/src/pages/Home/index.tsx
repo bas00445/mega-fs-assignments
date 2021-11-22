@@ -118,7 +118,7 @@ function Home() {
         </div>
         <div className="flex w-full justify-center">
           {error ? (
-            <WalletError />
+            <WalletError message={error.message} />
           ) : (
             transitionAnim((style, item) =>
               item ? (
