@@ -1,53 +1,33 @@
 import { commify } from "@ethersproject/units";
 import { useWeb3React } from "@web3-react/core";
 import React, { useMemo, useState } from "react";
-import { useTransition } from "react-spring";
 import Web3 from "web3";
 import { ERC20_ABI } from "../../abi";
 import { HeaderCardSection } from "../../components/HeaderCardSection";
 import { Tabs } from "../../components/Tabs";
 import { RINKEBY_COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
 import { injected } from "../../wallet/connectors";
+import { useTabTransition } from "./hooks/useTabTransition";
 import { SupplyCardAnim, WithdrawCardAnim } from "./styled";
 
 const TABS = ["Supply", "Withdraw"];
-const TRANSITION_X_OFFSET = 200;
 
 function Home() {
-  const { active, account, library, connector, activate, deactivate } =
+  const { active, account, library, connector, activate, deactivate, error } =
     useWeb3React<Web3>();
 
   const [totalSupply, setTotalSupply] = useState(0);
   const [userSupply, setUserSupply] = useState(0);
   const [percentApy, setPercentApy] = useState(0);
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
+
+  const transitionAnim = useTabTransition({ activeTabIndex });
 
   const compoundContract = useMemo(() => {
     return active
       ? new library.eth.Contract(ERC20_ABI, RINKEBY_COMPOUND_CONTRACT_ADDRESS)
       : null;
   }, [library, activate]);
-
-  const [activeTabIndex, setActiveTabIndex] = useState(0);
-
-  const transitionAnim = useTransition(activeTabIndex, {
-    from: {
-      position: "absolute",
-      opacity: 0,
-      x: activeTabIndex ? TRANSITION_X_OFFSET : -TRANSITION_X_OFFSET,
-    },
-    enter: {
-      opacity: 1,
-      x: 0,
-    },
-    leave: {
-      opacity: 0,
-      x: activeTabIndex ? -TRANSITION_X_OFFSET : TRANSITION_X_OFFSET,
-    },
-    initial: {
-      opacity: 1,
-      x: 0,
-    },
-  });
 
   async function connect() {
     try {
