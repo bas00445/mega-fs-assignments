@@ -3,7 +3,7 @@ import React from "react";
 import { injected } from "../../wallet/connectors";
 import Web3 from "web3";
 import { ERC20_ABI } from "../../abi";
-import { COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
+import { RINKEBY_COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
 
 function Home() {
   const { active, account, library, connector, activate, deactivate } =
@@ -12,7 +12,7 @@ function Home() {
   const handleClickSeeDetail = () => {
     const compoundContract = new library.eth.Contract(
       ERC20_ABI,
-      COMPOUND_CONTRACT_ADDRESS
+      RINKEBY_COMPOUND_CONTRACT_ADDRESS
     );
 
     compoundContract.methods

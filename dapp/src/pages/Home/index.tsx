@@ -3,7 +3,7 @@ import React, { useMemo, useState } from "react";
 import { injected } from "../../wallet/connectors";
 import Web3 from "web3";
 import { ERC20_ABI } from "../../abi";
-import { COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
+import { RINKEBY_COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
 import { HeaderCardSection } from "../../components/HeaderCardSection";
 import { SupplyCard } from "../../components/SupplyCard";
 import { Tabs } from "../../components/Tabs";
@@ -23,7 +23,7 @@ function Home() {
 
   const compoundContract = useMemo(() => {
     return active
-      ? new library.eth.Contract(ERC20_ABI, COMPOUND_CONTRACT_ADDRESS)
+      ? new library.eth.Contract(ERC20_ABI, RINKEBY_COMPOUND_CONTRACT_ADDRESS)
       : null;
   }, [library, activate]);
 
@@ -38,17 +38,27 @@ function Home() {
   }
 
   const calculateApy = async () => {
-    const RinkebyBlockPerSec = 15; // 15 seconds
+    const RinkebySecPerBlock = 15; // 15 seconds
+    const RinkebyBlockPerSec = 1 / RinkebySecPerBlock;
+
     const SecPerYear = 3.156e7;
 
     const BlockPerYear = RinkebyBlockPerSec * SecPerYear;
 
-    const SupplyRatePerBlock = await compoundContract.methods
-      .supplyRatePerBlock()
-      .call(); // Wei unit
+    const SupplyRatePerBlock =
+      (await compoundContract.methods.supplyRatePerBlock().call()) / 1e18;
 
-    const TotalSuppliedAmount = await compoundContract.methods.getCash().call(); // Wei unit
+    const TotalSuppliedAmount = await compoundContract.methods
+      .totalSupply()
+      .call(); // Wei unit
     const SupplyAPY = (SupplyRatePerBlock * BlockPerYear) / TotalSuppliedAmount; // In decimal
+
+    console.log({
+      SupplyRatePerBlock,
+      BlockPerYear,
+      TotalSuppliedAmount,
+      SupplyAPY: SupplyAPY / 1e18,
+    });
 
     setPercentApy(SupplyAPY * 100);
   };

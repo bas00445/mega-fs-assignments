@@ -3,7 +3,7 @@ import React, { ComponentPropsWithoutRef, useMemo, useState } from "react";
 import Web3 from "web3";
 import { ERC20_ABI } from "../../abi";
 import { PrimaryButton } from "../../common/styles";
-import { COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
+import { RINKEBY_COMPOUND_CONTRACT_ADDRESS } from "../../contracts";
 import { injected } from "../../wallet/connectors";
 import { Container } from "./styled";
 import { debounce } from "lodash-es";
@@ -23,7 +23,7 @@ export function SupplyCard({ ...props }: Props) {
 
   const compoundContract = useMemo(() => {
     return active
-      ? new library.eth.Contract(ERC20_ABI, COMPOUND_CONTRACT_ADDRESS)
+      ? new library.eth.Contract(ERC20_ABI, RINKEBY_COMPOUND_CONTRACT_ADDRESS)
       : null;
   }, [library, activate]);
 
