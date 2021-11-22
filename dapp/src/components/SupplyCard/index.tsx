@@ -10,6 +10,9 @@ import { debounce } from "lodash-es";
 import { Modal } from "../../components/Modal";
 import useModal from "../../components/Modal/hooks/useModal";
 import { ReactComponent as CheckIcon } from "../../assets/icons/check.svg";
+import { ReactComponent as FailIcon } from "../../assets/icons/fail.svg";
+import { ReactComponent as SpinnerIcon } from "../../assets/icons/spinner.svg";
+import { State } from "../../types";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {}
 
@@ -19,6 +22,8 @@ export function SupplyCard({ ...props }: Props) {
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState(0);
   const [amountCEth, setAmountCEth] = useState(0);
+  const [mintState, setMintState] = useState(State.Idle);
+
   const { isShowing: isShowingModal, toggle: toggleModal } = useModal();
 
   const compoundContract = useMemo(() => {
@@ -68,15 +73,18 @@ export function SupplyCard({ ...props }: Props) {
 
   const mintToken = () => {
     const weiUnit = Web3.utils.toWei(amount.toString(), "ether");
+    toggleModal();
+    setMintState(State.Loading);
     compoundContract.methods
       .mint()
       .send({ from: account, value: weiUnit })
       .then((tx) => {
+        setMintState(State.Idle);
         console.log({ tx });
-        toggleModal();
       })
       .catch((err) => {
         console.error(err);
+        setMintState(State.Error);
       });
   };
 
@@ -108,15 +116,25 @@ export function SupplyCard({ ...props }: Props) {
       });
   };
 
-  const SuccessModalContent = () => (
+  const ModalContent = () => (
     <div className="flex flex-col items-center">
       <div className="text-gray-900 text-2xl font-medium mb-4">
-        Transaction Submitted
+        {mintState === State.Loading && "Submitting Transaction..."}
+        {mintState === State.Idle && "Transaction Submitted"}
+        {mintState === State.Error && "Transaction Failed"}
       </div>
-      <CheckIcon className="mb-6" />
-      <div className="text-blue-600 underline cursor-pointer mb-7">
-        View on Etherscan
+      <div className="mb-6">
+        {mintState === State.Loading && (
+          <SpinnerIcon className="animate-spin" />
+        )}
+        {mintState === State.Idle && <CheckIcon />}
+        {mintState === State.Error && <FailIcon />}
       </div>
+      {mintState === State.Idle && (
+        <div className="text-blue-600 underline cursor-pointer mb-7">
+          View on Etherscan
+        </div>
+      )}
       <PrimaryButton onClick={toggleModal}>OK</PrimaryButton>
     </div>
   );
@@ -178,7 +196,7 @@ export function SupplyCard({ ...props }: Props) {
         )}
       </div>
       <Modal isShowing={isShowingModal} hide={toggleModal}>
-        <SuccessModalContent />
+        <ModalContent />
       </Modal>
     </Container>
   );
