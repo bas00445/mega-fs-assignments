@@ -34,7 +34,5 @@ export const ModalContent = styled.div.attrs({
   background: white;
   max-width: 500px;
   padding: 2rem;
-  height: 100%;
   min-width: 360px;
-  max-height: 300px;
 `;
