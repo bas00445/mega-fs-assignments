@@ -81,15 +81,6 @@ export function SupplyCard({ ...props }: Props) {
       });
   };
 
-  const getCEthBalance = async () => {
-    compoundContract.methods
-      .balanceOf(account)
-      .call()
-      .then((balance) => {
-        Web3.utils.fromWei(balance);
-      });
-  };
-
   const handleClickMaxInput = () => {
     setAmount(balance);
   };
