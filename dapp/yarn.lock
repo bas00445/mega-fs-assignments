@@ -1262,6 +1262,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@compound-finance/compound-js@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@compound-finance/compound-js/-/compound-js-0.4.1.tgz#fe0fbc3347939ccba53ed2190ec62064a800353f"
+  integrity sha512-WGe56vNou+caP33tfP6Yb7xWKxWjgE9BF4Wy4DyKo2mFFkcLM7vKl5n9xDUBbBA9gzgqKL0Vq8mb1M8xrTXoMw==
+
 "@craco/craco@^6.4.1":
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/@craco/craco/-/craco-6.4.1.tgz#222b0cd95a955935c5564aa7788a6c626e4d9bc4"
