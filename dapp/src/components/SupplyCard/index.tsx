@@ -142,10 +142,7 @@ export function SupplyCard({ ...props }: Props) {
   }, [amount]);
 
   return (
-    <Container
-      className="bg-white shadow px-6 pt-6 pb-9 rounded-lg "
-      {...props}
-    >
+    <Container className="bg-white shadow px-6 pt-6 pb-9 rounded-lg" {...props}>
       <div className="w-full">
         <div className="text-2xl text-gray-900 mb-4">Supply</div>
         <div className="flex justify-between mb-2">
