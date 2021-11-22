@@ -131,6 +131,8 @@ export function WithdrawCard({ ...props }: Props) {
     </div>
   );
 
+  const disabledSupplyButton = React.useMemo(() => amount <= 0, [amount]);
+
   React.useEffect(() => {
     if (active) {
       getUserSupplied();
@@ -174,7 +176,12 @@ export function WithdrawCard({ ...props }: Props) {
           {/* <div>{amountCEth} cETH</div> */}
         </div>
         {active ? (
-          <PrimaryButton onClick={handleClickWithdraw}>Withdraw</PrimaryButton>
+          <PrimaryButton
+            onClick={handleClickWithdraw}
+            disabled={disabledSupplyButton}
+          >
+            Withdraw
+          </PrimaryButton>
         ) : (
           <PrimaryButton onClick={handleClickUnlockWallet}>
             Unlock Wallet

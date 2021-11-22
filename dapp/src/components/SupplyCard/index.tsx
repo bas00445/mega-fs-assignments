@@ -131,6 +131,8 @@ export function SupplyCard({ ...props }: Props) {
     </div>
   );
 
+  const disabledSupplyButton = React.useMemo(() => amount <= 0, [amount]);
+
   React.useEffect(() => {
     if (active) {
       getEthBalance();
@@ -176,7 +178,12 @@ export function SupplyCard({ ...props }: Props) {
           <div>{amountCEth} cETH</div>
         </div>
         {active ? (
-          <PrimaryButton onClick={handleClickSupply}>Supply</PrimaryButton>
+          <PrimaryButton
+            onClick={handleClickSupply}
+            disabled={disabledSupplyButton}
+          >
+            Supply
+          </PrimaryButton>
         ) : (
           <PrimaryButton onClick={handleClickUnlockWallet}>
             Unlock Wallet
