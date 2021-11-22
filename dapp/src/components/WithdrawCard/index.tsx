@@ -177,7 +177,7 @@ export function WithdrawCard({ ...props }: Props) {
           <PrimaryButton onClick={handleClickWithdraw}>Withdraw</PrimaryButton>
         ) : (
           <PrimaryButton onClick={handleClickUnlockWallet}>
-            ) Unlock Wallet
+            Unlock Wallet
           </PrimaryButton>
         )}
       </div>
