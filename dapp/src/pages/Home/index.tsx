@@ -19,6 +19,7 @@ function Home() {
 
   const [totalSupply, setTotalSupply] = useState(0);
   const [userSupply, setUserSupply] = useState(0);
+  const [percentApy, setPercentApy] = useState(0);
 
   const compoundContract = useMemo(() => {
     return active
@@ -28,17 +29,6 @@ function Home() {
 
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
-  const getExchangeRateStored = async () => {
-    const exchangeRate = await compoundContract.methods
-      .exchangeRateStored()
-      .call();
-
-    const totalSupply = await compoundContract.methods.totalSupply().call();
-    const answer = exchangeRate * totalSupply * 4373;
-
-    console.log({ answer });
-  };
-
   async function connect() {
     try {
       await activate(injected);
@@ -46,6 +36,22 @@ function Home() {
       console.log(ex);
     }
   }
+
+  const calculateApy = async () => {
+    const RinkebyBlockPerSec = 15; // 15 seconds
+    const SecPerYear = 3.156e7;
+
+    const BlockPerYear = RinkebyBlockPerSec * SecPerYear;
+
+    const SupplyRatePerBlock = await compoundContract.methods
+      .supplyRatePerBlock()
+      .call(); // Wei unit
+
+    const TotalSuppliedAmount = await compoundContract.methods.getCash().call(); // Wei unit
+    const SupplyAPY = (SupplyRatePerBlock * BlockPerYear) / TotalSuppliedAmount; // In decimal
+
+    setPercentApy(SupplyAPY * 100);
+  };
 
   const getTotalCEthSupply = () => {
     compoundContract.methods
@@ -79,7 +85,7 @@ function Home() {
     if (active) {
       getUserSupplied();
       getTotalCEthSupply();
-      getExchangeRateStored();
+      calculateApy();
     }
   }, [active]);
 
@@ -104,7 +110,10 @@ function Home() {
             cardTitle="Total Supplied"
             body={`${commify(totalSupply)} ETH`}
           />
-          <HeaderCardSection cardTitle="APY" body="100.54%" />
+          <HeaderCardSection
+            cardTitle="APY"
+            body={`${percentApy.toFixed(2)}%`}
+          />
         </div>
         <div className="flex w-full justify-center">
           {activeTabIndex === 0 ? <SupplyCard /> : <WithdrawCard />}
