@@ -82,11 +82,15 @@ function Home() {
     setActiveTabIndex(tabIndex);
   };
 
+  const fetchCommonInfo = () => {
+    getUserSupplied();
+    getTotalCEthSupply();
+    calculateApy();
+  };
+
   React.useEffect(() => {
     if (active) {
-      getUserSupplied();
-      getTotalCEthSupply();
-      calculateApy();
+      fetchCommonInfo();
     }
   }, [active]);
 
@@ -122,9 +126,15 @@ function Home() {
           ) : (
             transitionAnim((style, item) =>
               item ? (
-                <WithdrawCardAnim style={style} />
+                <WithdrawCardAnim
+                  style={style}
+                  onTransactionSuccess={fetchCommonInfo}
+                />
               ) : (
-                <SupplyCardAnim style={style} />
+                <SupplyCardAnim
+                  style={style}
+                  onTransactionSuccess={fetchCommonInfo}
+                />
               )
             )
           )}

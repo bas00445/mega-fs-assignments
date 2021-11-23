@@ -16,9 +16,11 @@ import { Modal } from "../Modal";
 import useModal from "../Modal/hooks/useModal";
 import { Container } from "./styled";
 
-interface Props extends ComponentPropsWithoutRef<"div"> {}
+interface Props extends ComponentPropsWithoutRef<"div"> {
+  onTransactionSuccess?: () => void;
+}
 
-export function WithdrawCard({ ...props }: Props) {
+export function WithdrawCard({ onTransactionSuccess, ...props }: Props) {
   const { active, account, library, activate } = useWeb3React<Web3>();
 
   const [currency, setCurrency] = useState("ETH");
@@ -76,6 +78,7 @@ export function WithdrawCard({ ...props }: Props) {
       .then((tx) => {
         setRedeemState(State.Idle);
         setTx(tx.transactionHash);
+        onTransactionSuccess?.();
         console.log({ tx });
       })
       .catch((err) => {

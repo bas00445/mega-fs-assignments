@@ -13,9 +13,11 @@ import { State } from "../../types";
 import { injected } from "../../wallet/connectors";
 import { Container } from "./styled";
 
-interface Props extends ComponentPropsWithoutRef<"div"> {}
+interface Props extends ComponentPropsWithoutRef<"div"> {
+  onTransactionSuccess?: () => void;
+}
 
-export function SupplyCard({ ...props }: Props) {
+export function SupplyCard({ onTransactionSuccess, ...props }: Props) {
   const { active, account, library, activate } = useWeb3React<Web3>();
 
   const [currency, setCurrency] = useState("ETH");
@@ -75,6 +77,7 @@ export function SupplyCard({ ...props }: Props) {
       .then((tx) => {
         setMintState(State.Idle);
         setTx(tx.transactionHash);
+        onTransactionSuccess?.();
         console.log({ tx });
       })
       .catch((err) => {
