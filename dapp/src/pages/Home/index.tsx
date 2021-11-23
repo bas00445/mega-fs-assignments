@@ -1,4 +1,3 @@
-import { commify } from "@ethersproject/units";
 import { useWeb3React } from "@web3-react/core";
 import React, { useMemo, useState } from "react";
 import Web3 from "web3";
@@ -109,11 +108,11 @@ function Home() {
         <div className="flex gap-8 w-full mb-16 flex-wrap">
           <HeaderCardSection
             cardTitle="Your Supplied"
-            body={`${commify(userSupply)} ETH`}
+            body={`${userSupply.toLocaleString()} ETH`}
           />
           <HeaderCardSection
             cardTitle="Total Supplied"
-            body={`${commify(totalSupply)} ETH`}
+            body={`${totalSupply.toLocaleString()} ETH`}
           />
           <HeaderCardSection
             cardTitle="APY"
