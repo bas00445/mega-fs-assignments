@@ -122,15 +122,9 @@ function Home() {
           ) : (
             transitionAnim((style, item) =>
               item ? (
-                <WithdrawCardAnim
-                  className="bg-white shadow px-6 py-9 rounded-lg mb-12"
-                  style={style}
-                />
+                <WithdrawCardAnim style={style} />
               ) : (
-                <SupplyCardAnim
-                  className="bg-white shadow px-6 py-9 rounded-lg mb-12"
-                  style={style}
-                />
+                <SupplyCardAnim style={style} />
               )
             )
           )}
