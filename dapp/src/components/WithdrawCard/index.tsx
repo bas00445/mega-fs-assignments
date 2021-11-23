@@ -78,6 +78,7 @@ export function WithdrawCard({ onTransactionSuccess, ...props }: Props) {
       .then((tx) => {
         setRedeemState(State.Idle);
         setTx(tx.transactionHash);
+        getUserSupplied();
         onTransactionSuccess?.();
         console.log({ tx });
       })

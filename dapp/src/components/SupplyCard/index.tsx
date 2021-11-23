@@ -77,6 +77,7 @@ export function SupplyCard({ onTransactionSuccess, ...props }: Props) {
       .then((tx) => {
         setMintState(State.Idle);
         setTx(tx.transactionHash);
+        getEthBalance();
         onTransactionSuccess?.();
         console.log({ tx });
       })
