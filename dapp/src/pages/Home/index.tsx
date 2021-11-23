@@ -95,7 +95,7 @@ function Home() {
   }, []);
 
   return (
-    <div className="h-screen bg-gray-50 flex justify-center">
+    <div className="h-auto min-h-screen bg-gray-50 flex justify-center">
       <div className="w-4/5 pt-12">
         <Tabs
           tabs={TABS}
@@ -123,12 +123,12 @@ function Home() {
             transitionAnim((style, item) =>
               item ? (
                 <WithdrawCardAnim
-                  className="bg-white shadow px-6 py-9 rounded-lg"
+                  className="bg-white shadow px-6 py-9 rounded-lg mb-12"
                   style={style}
                 />
               ) : (
                 <SupplyCardAnim
-                  className="bg-white shadow px-6 py-9 rounded-lg"
+                  className="bg-white shadow px-6 py-9 rounded-lg mb-12"
                   style={style}
                 />
               )
